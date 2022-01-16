@@ -9,3 +9,6 @@ def login(request):
         print("asd",username)
         print("asd",password)
     return render(request,'login/login.html')
+
+def register(request):
+    return render(request,"login/register.html")

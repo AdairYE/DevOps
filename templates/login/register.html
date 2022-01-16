@@ -45,15 +45,7 @@
         }
       }
 
-      .login {
-          max-width: 70%;
-          width: 100%;
-          float: left;
-      }
-      .register {
-          float: right;
 
-      }
     </style>
 
     
@@ -62,9 +54,9 @@
   </head>
   <body class="text-center">
     
-<form class="form-signin" name="login" method="post" action="/login/">
+<form class="form-signin" name="login" method="post" action="/register/">
     {% csrf_token %}
-  <h1 class="h3 mb-3 font-weight-normal">欢迎来到小黑屋</h1><br>
+  <h1 class="h3 mb-3 font-weight-normal">注册</h1><br>
   <label for="text" class="sr-only">用户名</label>
   <input type="text" name="username" id="text" class="form-control" placeholder="用户名" required="" autofocus=""><br>
   <label for="inputPassword" class="sr-only">Password</label>
@@ -74,12 +66,10 @@
       <input type="checkbox" value="remember-me" checked="checked"> Remember me
     </label>
   </div>
-    <dev class="login">
-        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-    </dev>
     <dev class="register">
-        <button class="btn btn-lg btn-outline-primary" type="submit" onclick="register()">注册</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
     </dev>
+
 
 </form>
 
@@ -88,12 +78,6 @@
   
 
 </body><div id="edge-translate-notifier-container" class="edge-translate-notifier-center"></div>
-<script>
-    function register() {
-        document.login.action="/register/";
-        document.login.submit();
-    }
 
-</script>
 
 </html>
