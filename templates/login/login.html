@@ -14,7 +14,7 @@
     
 
     <!-- Bootstrap core CSS -->
-<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" integrity="sha384-p1KAotb3W9ndluCsqePPYnjRm3c6abdnIjo0tQwYUv83VsbsYd43RuofnFAaDo0E" crossorigin="anonymous">
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
 
 
 
@@ -64,6 +64,11 @@
     
 <form class="form-signin" name="login" method="post" action="/login/">
     {% csrf_token %}
+    {% if retcode == 0 %}
+        <div class="alert alert-success" role="alert">
+            {{ info }}
+        </div>
+    {% endif %}
   <h1 class="h3 mb-3 font-weight-normal">欢迎来到小黑屋</h1><br>
   <label for="text" class="sr-only">用户名</label>
   <input type="text" name="username" id="text" class="form-control" placeholder="用户名" required="" autofocus=""><br>
@@ -74,6 +79,11 @@
       <input type="checkbox" value="remember-me" checked="checked"> Remember me
     </label>
   </div>
+    {% if retcode == 1 %}
+        <div class="alert alert-danger" role="alert">
+          {{ err }}
+        </div>
+    {% endif %}
     <dev class="login">
         <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
     </dev>

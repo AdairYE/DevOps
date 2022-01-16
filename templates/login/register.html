@@ -14,7 +14,7 @@
     
 
     <!-- Bootstrap core CSS -->
-<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" integrity="sha384-p1KAotb3W9ndluCsqePPYnjRm3c6abdnIjo0tQwYUv83VsbsYd43RuofnFAaDo0E" crossorigin="anonymous">
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
 
 
 
@@ -54,13 +54,21 @@
   </head>
   <body class="text-center">
     
-<form class="form-signin" name="login" method="post" action="/register/">
+<form class="form-signin" method="post" action="/register/">
     {% csrf_token %}
   <h1 class="h3 mb-3 font-weight-normal">注册</h1><br>
   <label for="text" class="sr-only">用户名</label>
-  <input type="text" name="username" id="text" class="form-control" placeholder="用户名" required="" autofocus=""><br>
+  <input type="text" name="reg_username" id="text" class="form-control" placeholder="用户名" required="" autofocus=""><br>
+  <input type="email" name="reg_email" id="inpute" class="form-control" placeholder="邮箱" required="" autofocus=""><br>
   <label for="inputPassword" class="sr-only">Password</label>
-  <input type="password" name="password" id="inputPassword" class="form-control" placeholder="密码" required="">
+  <input type="password" name="reg_password" id="inputPassword" class="form-control" placeholder="密码" required="">
+    <input type="password" name="confirm_password" id="inputPassword" class="form-control" placeholder="确认密码" required="">
+
+    {% if retcode == 1 %}
+        <div class="alert alert-danger" role="alert">
+          {{ err }}
+        </div>
+    {% endif %}
   <div class="checkbox mb-3">
     <label>
       <input type="checkbox" value="remember-me" checked="checked"> Remember me
