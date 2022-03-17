@@ -167,7 +167,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="add-smoke-form" method="post" action="#">
+            <form id="add-smoke-form" method="post" action="">
                 <div class="modal-body">
                     {% for info in userInfo %}
                         <div class="form-group">
@@ -196,16 +196,16 @@
 </body>
 <div id="edge-translate-notifier-container" class="edge-translate-notifier-center"></div>
 <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-<script type="text/javascript">
-
+<script>
     function add_smoke() {
         $.ajax(
             {
                 {#cache: false,#}
                 type: "POST",
                 dataType: "json",
-                url: "",
+                url: "{% url 'login' %}",
                 data: $("#add-smoke-form").serialize(),
+                headers: { "X-CSRFToken": "{{ csrf_token }}" }, //Django中表单提交都需要csrf验证
                 {#async: false,#}
 
                 success: function (data) {

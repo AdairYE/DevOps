@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,JsonResponse
 
 from Auth.froms.froms import userInfoForm
 
@@ -46,5 +46,13 @@ def register(request):
 
 def indexHome(request):
     userInfo = userInfoForm()
-    print(request.POST)
+    if request.method == "POST":
+        userInfo = userInfoForm(request.POST)
+        if userInfo.is_valid():
+            err = userInfo.errors
+            print(err)
+            userInfo.save()
+        else:
+            print("asd")
+        return JsonResponse({"asd":1})
     return render(request,"base.html",{"userInfo":userInfo})
