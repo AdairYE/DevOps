@@ -20,5 +20,6 @@ from Auth import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('Auth.urls')),
+    path('WorkOrder/', include('WorkOrder.urls')),
     path('', views.indexHome,name="login"),
 ]

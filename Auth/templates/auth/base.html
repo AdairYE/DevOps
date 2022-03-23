@@ -112,10 +112,6 @@
                     data-target="#loginModal">
                 登 录
             </button>
-            <button style="width:150px;height:40px" type="button" class="btn btn-secondary" data-toggle="modal"
-                    data-target="#registerModal">
-                注 册
-            </button>
         </p>
     </section>
 
@@ -132,59 +128,31 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">用户名</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                            else.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">密码</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1">
-                    </div>
+                <form id="add-smoke-form-login">
+                    {% for info in userLoginInfo %}
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">{{ info.label }}</label>
+                            {{ info }}
+                        </div>
+                    {% endfor %}
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
                         <label class="form-check-label" for="exampleCheck1">Check me out</label>
                     </div>
+
                 </form>
+
             </div>
+
             <div class="modal-footer">
+
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">登录</button>
+                <button type="button" onclick="login()" class="btn btn-primary">登录</button>
             </div>
         </div>
     </div>
 </div>
 
-{# 注册 #}
-<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">成为新用户</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="add-smoke-form" method="post" action="">
-                <div class="modal-body">
-                    {% for info in userInfo %}
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">{{ info.label }}</label>
-                            {{ info }}
-                        </div>
-                    {% endfor %}
-                </div>
-            <p>aaa{{ data }}</p>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                    <input type="button" onclick="add_smoke()" class="btn btn-primary" value="注册">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <script src="{% static 'js/jquery.js' %}" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="{% static 'js/jquery.slim.min.js' %}"><\/script>')</script>
@@ -198,27 +166,23 @@
 <div id="edge-translate-notifier-container" class="edge-translate-notifier-center"></div>
 <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script>
-    function add_smoke() {
+    function login() {
         $.ajax(
             {
-                {#cache: false,#}
                 type: "POST",
                 dataType: "json",
                 url: "{% url 'login' %}",
-                data: $("#add-smoke-form").serialize(),
-                headers: { "X-CSRFToken": "{{ csrf_token }}" }, //Django中表单提交都需要csrf验证
-                {#async: false,#}
+                data: $("#add-smoke-form-login").serialize(),
+                headers: {"X-CSRFToken": "{{ csrf_token }}"}, //Django中表单提交都需要csrf验证
 
                 success: function (data) {
-                    if (data.status == "true"){
-                        document.getElementById("add-smoke-form").reset();
-                        console.log(data,'提交数据成功');
-                    }else if (data.status == "false"){
-                        console.log("dsa",data)
-                        for (var info in data["msg"]){
-                            var idName="#id_" + info
-                            $(idName).addClass("is-invalid")
-                        }
+                    if (data.status == "false") {
+                        $(".modal-body").after(
+                            "<div class='alert alert-danger' role='alert'>" + data["msg"] + "</div>"
+                        )
+                        document.getElementById("add-smoke-form-login").reset();
+                    } else if(data.status == "true") {
+                         location.href = 'WorkOrder/base'
                     }
 
                 }
