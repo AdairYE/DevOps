@@ -112,7 +112,18 @@
                     data-target="#loginModal">
                 登 录
             </button>
+            <button style="width:150px;height:40px" type="button" class="btn btn-outline-secondary" data-toggle="modal"
+                    data-target="#registerModal">
+                注 册
+            </button>
+
         </p>
+            <div id="registerInfo" style="width:500px;height:50px" class="alert alert-success alert-dismissible fade container" role="alert">
+              <strong>恭喜!</strong> 用户注册成功！
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
     </section>
 
 </main>
@@ -127,7 +138,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body login">
                 <form id="add-smoke-form-login">
                     {% for info in userLoginInfo %}
                         <div class="form-group">
@@ -154,6 +165,36 @@
 </div>
 
 
+{# 注 册 #}
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">欢迎加入</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body register">
+                <form id="add-smoke-form-register">
+                    {% for info in userRegisterInfo %}
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">{{ info.label }}</label>
+                            {{ info }}
+                        </div>
+                    {% endfor %}
+                </form>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" onclick="register()" class="btn btn-primary">注册</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="{% static 'js/jquery.js' %}" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="{% static 'js/jquery.slim.min.js' %}"><\/script>')</script>
 <script src="{% static 'js/bootstrap.js' %}" crossorigin="anonymous"></script>
@@ -166,6 +207,8 @@
 <div id="edge-translate-notifier-container" class="edge-translate-notifier-center"></div>
 <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script>
+    {# 登录 #}
+
     function login() {
         $.ajax(
             {
@@ -174,15 +217,45 @@
                 url: "{% url 'login' %}",
                 data: $("#add-smoke-form-login").serialize(),
                 headers: {"X-CSRFToken": "{{ csrf_token }}"}, //Django中表单提交都需要csrf验证
-
                 success: function (data) {
                     if (data.status == "false") {
-                        $(".modal-body").after(
+                        console.log(data)
+                        $(".login").after(
                             "<div class='alert alert-danger' role='alert'>" + data["msg"] + "</div>"
                         )
                         document.getElementById("add-smoke-form-login").reset();
-                    } else if(data.status == "true") {
-                         location.href = 'WorkOrder/base'
+                    } else if (data.status == "true") {
+                        console.log(data)
+                        location.href = 'WorkOrder/base'
+                    }
+
+                }
+            }
+        )
+    }
+
+    {# 注册 #}
+
+    function register() {
+        $.ajax(
+            {
+                type: "POST",
+                dataType: "json",
+                url: "{% url 'login' %}",
+                data: $("#add-smoke-form-register").serialize(),
+                headers: {"X-CSRFToken": "{{ csrf_token }}"}, //Django中表单提交都需要csrf验证
+                success: function (data) {
+                    if (data["status"] == "false") {
+                        for (var info in data["msg"]) {
+                            var inputLabel = "#add-smoke-form-register #id_" + info
+                            $(inputLabel).attr({"aria-describedby": "errInfo"})
+                            $(inputLabel).addClass("is-invalid")
+                            $(inputLabel).after(
+                                "<div id='errInfo' class='invalid-feedback'>" + data["msg"][info][0] + "</div>"
+                            )
+                        }
+                    } else {
+                        $("#registerInfo").addClass("show");
                     }
 
                 }
