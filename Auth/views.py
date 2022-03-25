@@ -13,7 +13,7 @@ def indexHome(request):
         userRegisterInfo = userRegister()
         return render(request, "auth/base.html", {"userLoginInfo": userLoginInfo,"userRegisterInfo":userRegisterInfo})
     elif request.method == "POST":
-        if len(request.POST) > 2:
+        if len(request.POST) > 2: # 注册
             userInfo = userRegister(request.POST)
             if userInfo.is_valid():
                 userInfo.save()
@@ -21,18 +21,18 @@ def indexHome(request):
                 executeInfo["status"] = "false"
                 executeInfo["msg"] = userInfo.errors
             return JsonResponse(executeInfo)
-        else:
-            userInfo = userLogin(request.POST)
-            if userInfo.is_valid():
-                validInfo = userInfo.cleaned_data
-                username = validInfo["username"]
-                password =validInfo["password"]
-                loginCheck = authenticate(username=username, password=password)
-                if loginCheck:
-                    login(request, user=loginCheck)
-                else:
-                    executeInfo["status"] = "false"
-                    executeInfo["msg"] = "登录失败，请重新登录!"
+        else: # 登录
+            username = request.POST["username"]
+            print(username)
+            password = request.POST["password"]
+            loginCheck = authenticate(username=username,password=password)
+            if loginCheck is not None:
+                print(1)
+                login(request, user=loginCheck)
+            else:
+                executeInfo["status"] = "false"
+                executeInfo["msg"] = "用户密码有误，请重新输入！"
+                print(executeInfo)
             return JsonResponse(executeInfo)
 
         # # 登录

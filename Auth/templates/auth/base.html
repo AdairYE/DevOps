@@ -118,12 +118,7 @@
             </button>
 
         </p>
-            <div id="registerInfo" style="width:500px;height:50px" class="alert alert-success alert-dismissible fade container" role="alert">
-              <strong>恭喜!</strong> 用户注册成功！
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+
     </section>
 
 </main>
@@ -219,13 +214,12 @@
                 headers: {"X-CSRFToken": "{{ csrf_token }}"}, //Django中表单提交都需要csrf验证
                 success: function (data) {
                     if (data.status == "false") {
-                        console.log(data)
                         $(".login").after(
                             "<div class='alert alert-danger' role='alert'>" + data["msg"] + "</div>"
-                        )
-                        document.getElementById("add-smoke-form-login").reset();
+                            )
+
                     } else if (data.status == "true") {
-                        console.log(data)
+                        document.getElementById("add-smoke-form-login").reset();
                         location.href = 'WorkOrder/base'
                     }
 
@@ -235,7 +229,6 @@
     }
 
     {# 注册 #}
-
     function register() {
         $.ajax(
             {
@@ -254,8 +247,12 @@
                                 "<div id='errInfo' class='invalid-feedback'>" + data["msg"][info][0] + "</div>"
                             )
                         }
+                        document.getElementById("add-smoke-form-register").reset();
                     } else {
-                        $("#registerInfo").addClass("show");
+                        $(".register").after(
+                            "<div class='alert alert-success' role='alert'><strong>恭喜！</strong>用户注册成功！</div>"
+                        )
+                        document.getElementById("add-smoke-form-register").reset();
                     }
 
                 }
