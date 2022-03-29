@@ -20,6 +20,7 @@ def captcha(request):
 
     # 写入 session
     request.session['valid_code'] = code
+    request.session.set_expiry(60) # session 的过期时间
     return HttpResponse(stream.getvalue())
 
 def indexHome(request):
@@ -27,7 +28,7 @@ def indexHome(request):
     if request.method == "GET":
         userLoginInfo = userLogin()
         userRegisterInfo = userRegister()
-        return render(request, "auth/base.html", {"userLoginInfo": userLoginInfo,"userRegisterInfo":userRegisterInfo})
+        return render(request, "auth/auth.html", {"userLoginInfo": userLoginInfo, "userRegisterInfo":userRegisterInfo})
     elif request.method == "POST":
         if len(request.POST) > 3: # 注册
             userInfo = userRegister(request.POST)
@@ -52,3 +53,7 @@ def indexHome(request):
                 executeInfo["status"] = "false"
                 executeInfo["msg"] = "验证码输入错误，请重新输入！"
             return JsonResponse(executeInfo)
+
+def toBase(request):
+    if request.method == "GET":
+        return render(request, "func_base.html", {"name": 1})

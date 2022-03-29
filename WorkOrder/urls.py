@@ -3,5 +3,5 @@ from django.urls import path
 from WorkOrder import views
 
 urlpatterns = [
-    path('base/', views.toBase),
+    # path('base/', views.toBase),
 ]
