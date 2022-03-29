@@ -136,27 +136,37 @@
             <div class="modal-body login">
                 <form id="add-smoke-form-login">
                     {% for info in userLoginInfo %}
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">{{ info.label }}</label>
-                            {{ info }}
-                        </div>
+                        {% if info.name == "code" %}
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">{{ info.label }}</label>
+                                <div class="form-inline">
+                                    {{ info }}
+                                    <div class="col-md-5 col-xs-5">
+                                        <img src="/auth/check_code" onclick="changeImg(this)" class="img">
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">{{ info.label }}</label>
+                                {{ info }}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
                         <label class="form-check-label" for="exampleCheck1">Check me out</label>
                     </div>
-
                 </form>
 
             </div>
-
             <div class="modal-footer">
-
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                 <button type="button" onclick="login()" class="btn btn-primary">登录</button>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 
@@ -202,6 +212,13 @@
 <div id="edge-translate-notifier-container" class="edge-translate-notifier-center"></div>
 <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script>
+    {# 验证码 #}
+
+    function changeImg(ths) {
+        // 硬编码
+        ths.src = '/auth/check_code/?temp=' + Math.random();
+    }
+
     {# 登录 #}
 
     function login() {
@@ -214,9 +231,10 @@
                 headers: {"X-CSRFToken": "{{ csrf_token }}"}, //Django中表单提交都需要csrf验证
                 success: function (data) {
                     if (data.status == "false") {
+                        console.log(data["msg"])
                         $(".login").after(
                             "<div class='alert alert-danger' role='alert'>" + data["msg"] + "</div>"
-                            )
+                        )
 
                     } else if (data.status == "true") {
                         document.getElementById("add-smoke-form-login").reset();
@@ -229,6 +247,7 @@
     }
 
     {# 注册 #}
+
     function register() {
         $.ajax(
             {

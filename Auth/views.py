@@ -1,10 +1,26 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout,handlers
 from django.http import HttpResponseRedirect, JsonResponse
 
 from Auth.froms.froms import userLogin,userRegister
+from io import BytesIO
+from utils.captcha import create_validate_code
 
+def captcha(request):
+    """
+    获取验证码
+    :param request:
+    :return:
+    """
+    stream = BytesIO()
+    # 生成图片 img、数字代码 code，保存在内存中，而不是 Django 项目中
+    img, code = create_validate_code()
+    img.save(stream, 'PNG')
+
+    # 写入 session
+    request.session['valid_code'] = code
+    return HttpResponse(stream.getvalue())
 
 def indexHome(request):
     executeInfo = {"status": "true", "msg": None}
@@ -13,7 +29,7 @@ def indexHome(request):
         userRegisterInfo = userRegister()
         return render(request, "auth/base.html", {"userLoginInfo": userLoginInfo,"userRegisterInfo":userRegisterInfo})
     elif request.method == "POST":
-        if len(request.POST) > 2: # 注册
+        if len(request.POST) > 3: # 注册
             userInfo = userRegister(request.POST)
             if userInfo.is_valid():
                 userInfo.save()
@@ -24,11 +40,15 @@ def indexHome(request):
         else: # 登录
             username = request.POST["username"]
             password = request.POST["password"]
-            loginCheck = authenticate(username=username,password=password)
-            if loginCheck is not None:
-                login(request, user=loginCheck)
+            code = request.POST["code"]
+            if code.upper() == request.session.get('valid_code').upper():
+                loginCheck = authenticate(username=username,password=password)
+                if loginCheck is not None:
+                    login(request, user=loginCheck)
+                else:
+                    executeInfo["status"] = "false"
+                    executeInfo["msg"] = "用户密码有误，请重新输入！"
             else:
                 executeInfo["status"] = "false"
-                executeInfo["msg"] = "用户密码有误，请重新输入！"
+                executeInfo["msg"] = "验证码输入错误，请重新输入！"
             return JsonResponse(executeInfo)
-

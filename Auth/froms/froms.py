@@ -6,16 +6,22 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password,check_password
 
-class userLogin(forms.ModelForm):
+class baseFroms(forms.ModelForm):
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
+            field.widget.attrs["placeholder"] = "请输入{}".format(field.label)
+
+class userLogin(baseFroms,forms.ModelForm):
+    code = forms.CharField(
+        label="验证码"
+    )
     class Meta:
         model = User
-        fields = ["username", "password"]
-        widgets = {
-            "username": wid.TextInput(attrs={'class': 'form-control'}),
-            "password": wid.PasswordInput(attrs={'class': 'form-control'}),
-        }
+        fields = ["username", "password","code"]
 
-class userRegister(forms.ModelForm):
+class userRegister(baseFroms,forms.ModelForm):
     password = forms.CharField(
         label="密码",
         widget=forms.PasswordInput(),
@@ -41,12 +47,6 @@ class userRegister(forms.ModelForm):
         model = User
         fields = ["username","email","password","againPassword"]
 
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        for field in self.fields.values():
-            field.widget.attrs["class"] = "form-control"
-            field.widget.attrs["placeholder"] = "请输入{}".format(field.label)
-
     def clean_againPassword(self):
         password = self.cleaned_data["password"]
         againPassword = self.cleaned_data["againPassword"]
@@ -66,12 +66,6 @@ class userRegister(forms.ModelForm):
         password = make_password(password)
 
         return password
-
-
-
-
-
-
 
 
 
