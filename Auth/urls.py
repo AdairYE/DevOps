@@ -20,4 +20,5 @@ from Auth import views
 urlpatterns = [
     path('check_code/', views.captcha),
     path('base/', views.toBase),
+    path('logout/', views.userLogout,name="logout"),
 ]

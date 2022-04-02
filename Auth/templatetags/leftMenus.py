@@ -6,15 +6,16 @@ from Auth.models import parentMenus, Menus
 
 register = template.Library()
 
-@register.simple_tag
-def rightMenu():
-    rightMenu = {}
+
+@register.inclusion_tag("menu.html")
+def Menus():
+    leftMenu = {}
     parent = parentMenus.objects.all()
     for p in parent:
         obj = parentMenus.objects.get(name=p)
-        rightMenu[p.name] = []
+        leftMenu[p.name] = []
         for menus in obj.menus_set.all():
-            rightMenu[p.name].append(
+            leftMenu[p.name].append(
                 {
                     "name": menus.name,
                     "url": menus.url,
@@ -22,4 +23,6 @@ def rightMenu():
                     "priority": menus.priority
                 }
             )
-    return mark_safe(rightMenu)
+    return {
+        "leftMenu": leftMenu
+    }

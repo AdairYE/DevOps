@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, HttpResponse
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, handlers
 from django.http import HttpResponseRedirect, JsonResponse
 
@@ -49,6 +48,7 @@ def indexHome(request):
                 loginCheck = authenticate(username=username, password=password)
                 if loginCheck is not None:
                     login(request, user=loginCheck)
+                    request.session.set_expiry(3600)
                 else:
                     executeInfo["status"] = "false"
                     executeInfo["msg"] = "用户密码有误，请重新输入！"
@@ -57,8 +57,15 @@ def indexHome(request):
                 executeInfo["msg"] = "验证码输入错误，请重新输入！"
             return JsonResponse(executeInfo)
 
+def userLogout(request):
+    """
+    用户退出
+    """
+    logout(request)
+    request.session['valid_code'] = ""
+    return HttpResponseRedirect("/")
 
 def toBase(request):
-
     if request.method == "GET":
         return render(request, "func_base.html")
+
