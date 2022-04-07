@@ -8,26 +8,22 @@ class product(models.Model):
     name = models.CharField(
         max_length=64,
         null=True,
-        blank=True,
         verbose_name="产品名称"
     )
 
     code =models.CharField(
         max_length=32,
         null=True,
-        blank=True,
         verbose_name="产品代码"
     )
 
     productOwner = models.ManyToManyField(
         User,
-        null=True,
-        blank=True,
         verbose_name="产品负责人"
     )
 
     explain = models.TextField(
-        max_length=288,
+        max_length=25,
         verbose_name="产品说明"
     )
 

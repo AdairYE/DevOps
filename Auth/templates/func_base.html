@@ -165,7 +165,6 @@
 <script>window.jQuery || document.write('<script src="{% static "js/jquery.slim.min.js" %}"><\/script>')</script>
 <script src="{% static "js/bootstrap.js" %}" crossorigin="anonymous"></script>
 
-
 <script src="{% static "js/feather.js" %}"></script>
 <script src="{% static "js/Chart.js" %}"></script>
 <script src="{% static "js/dashboard.js" %}"></script>
@@ -173,4 +172,8 @@
 
 </body>
 <div id="edge-translate-notifier-container" class="edge-translate-notifier-center"></div>
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+{% block js %}
+    {# js 脚本内容 #}
+{% endblock %}
 </html>
