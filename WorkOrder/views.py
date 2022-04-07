@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from WorkOrder.models import product
 from WorkOrder.froms.addProduct import addProductFrom
+from WorkOrder.froms.editProduct import editProductFrom
 from django.http import HttpResponseRedirect, JsonResponse
 
 
@@ -30,4 +31,6 @@ def toIndex(request):
         return JsonResponse(executeInfo)
 
 def edit_product(request):
-    return render(request,"workorder/editProduct.html")
+    obj = product.objects.filter(id=request.GET["id"]).first()
+    editProduct = editProductFrom(instance=obj)
+    return render(request,"workorder/editProduct.html",{"editProduct":editProduct})

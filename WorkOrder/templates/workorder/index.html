@@ -17,7 +17,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">新增产品</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" onclick="pageRefresh()" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" onclick="pageRefresh()" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                     <button type="button" onclick="addProduct()" class="btn btn-primary">提交</button>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                     {% endfor %}
                 </td>
                 <td>
-                    <a role="button"  href="{% url 'edit_product' %}" class="btn btn-primary btn-sm">编辑</a>
+                    <a role="button"  href="/WorkOrder/editProduct/?id={{ data.id }}" class="btn btn-primary btn-sm">编辑</a>
                     <button type="button" class="btn btn-danger btn-sm">删除</button>
                 </td>
             </tr>
@@ -119,6 +119,9 @@
                     }
                 }
             )
+        }
+        function pageRefresh() {
+            window.location.reload()
         }
     </script>
 {% endblock %}

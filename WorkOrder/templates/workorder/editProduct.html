@@ -6,11 +6,20 @@
     </div>
 {% endblock %}
 {% block content %}
-<ul class="list-group list-group-flush">
-  <li class="list-group-item">An item</li>
-  <li class="list-group-item">A second item</li>
-  <li class="list-group-item">A third item</li>
-  <li class="list-group-item">A fourth item</li>
-  <li class="list-group-item">And a fifth one</li>
-</ul>
+    <ul class="list-group list-group-flush">
+    {% for product in editProduct %}
+        <li class="list-group-item">
+            <div class="form-inline">
+                <div class="form-group mb-2">
+                    <label for="exampleFormControlInput1">{{ product.label }}</label>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    {{ product }}
+                </div>
+
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+    <button type="button" class="btn btn-success btn-sm">Small button</button>
 {% endblock %}
