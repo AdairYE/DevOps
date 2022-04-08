@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from WorkOrder.models import product
 from WorkOrder.froms.addProduct import addProductFrom
 from WorkOrder.froms.editProduct import editProductFrom
@@ -31,6 +31,16 @@ def toIndex(request):
         return JsonResponse(executeInfo)
 
 def edit_product(request):
+    executeInfo = {"status": "true", "msg": None}
     obj = product.objects.filter(id=request.GET["id"]).first()
-    editProduct = editProductFrom(instance=obj)
-    return render(request,"workorder/editProduct.html",{"editProduct":editProduct})
+    if request.method == "GET":
+        editProduct = editProductFrom(instance=obj)
+        return render(request,"workorder/editProduct.html",{"editProduct":editProduct})
+    elif request.method == "POST":
+        editProduct = editProductFrom(request.POST,instance=obj)
+        if editProduct.is_valid():
+            editProduct.save()
+        else:
+            executeInfo["status"] = "false"
+            executeInfo["msg"] = editProduct.errors
+            return render(request, "workorder/editProduct.html", executeInfo)

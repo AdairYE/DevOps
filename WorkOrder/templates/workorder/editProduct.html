@@ -1,25 +1,60 @@
 {% extends "func_base.html" %}
+{% block css %}
+    .submit-row {
+    padding: 12px 14px;
+    margin: 0 0 20px;
+    background: #f8f8f8;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    text-align: right;
+    overflow: hidden;
+    }
+{% endblock %}
 
 {% block content-head %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2"><a href="{% url 'workorder_index' %}">产品管理<a> / 编辑</h1>
     </div>
 {% endblock %}
-{% block content %}
-    <ul class="list-group list-group-flush">
-    {% for product in editProduct %}
-        <li class="list-group-item">
-            <div class="form-inline">
-                <div class="form-group mb-2">
-                    <label for="exampleFormControlInput1">{{ product.label }}</label>
-                </div>
-                <div class="form-group mx-sm-3 mb-2">
-                    {{ product }}
-                </div>
 
-            </div>
-        </li>
-    {% endfor %}
+{% block content %}
+    <ul class="list-group list-group-flush" id="editProduct">
+        {% for product in editProduct %}
+            <li class="list-group-item">
+                <div class="form-inline">
+                    <div class="form-group mb-2">
+                        <label for="exampleFormControlInput1">{{ product.label }}</label>
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                        {{ product }}
+                    </div>
+
+                </div>
+            </li>
+        {% endfor %}
     </ul>
-    <button type="button" class="btn btn-success btn-sm">Small button</button>
+    <div class="submit-row">
+        <button type="button" class="btn btn-outline-danger ">删除</button>
+        <button type="button" onclick="saveProduct()" class="btn btn-primary">保存</button>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        function saveProduct() {
+            var product_ID =
+            $.ajax(
+                {
+                    type:"GET",
+                    dataType:"json",
+                    url:"{% url 'edit_product' %}",
+                    data:$("#editProduct").serialize(),
+                    headers:{"X-CSRFToken": "{{ csrf_token }}"},
+                    success:function (data) {
+                        console.log(data)
+                    }
+                }
+            )
+        }
+    </script>
 {% endblock %}
