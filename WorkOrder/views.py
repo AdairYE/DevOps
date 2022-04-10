@@ -30,9 +30,9 @@ def toIndex(request):
             executeInfo["msg"] = addProduct.errors
         return JsonResponse(executeInfo)
 
-def edit_product(request):
+def edit_product(request,id):
     executeInfo = {"status": "true", "msg": None}
-    obj = product.objects.filter(id=request.GET["id"]).first()
+    obj = product.objects.filter(id=id).first()
     if request.method == "GET":
         editProduct = editProductFrom(instance=obj)
         return render(request,"workorder/editProduct.html",{"editProduct":editProduct})
@@ -40,6 +40,7 @@ def edit_product(request):
         editProduct = editProductFrom(request.POST,instance=obj)
         if editProduct.is_valid():
             editProduct.save()
+            return redirect("/WorkOrder/index/")
         else:
             executeInfo["status"] = "false"
             executeInfo["msg"] = editProduct.errors
