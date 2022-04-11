@@ -8,12 +8,14 @@ class product(models.Model):
     name = models.CharField(
         max_length=64,
         null=True,
+        unique=True,
         verbose_name="产品名称"
     )
 
     code =models.CharField(
         max_length=32,
         null=True,
+        unique=True,
         verbose_name="产品代码"
     )
 
