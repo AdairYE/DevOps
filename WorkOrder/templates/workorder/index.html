@@ -33,7 +33,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" onclick="pageRefresh()" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" onclick="pageRefresh()" class="btn btn-secondary" data-dismiss="modal">关闭
+                    </button>
                     <button type="button" onclick="addProduct()" class="btn btn-primary">提交</button>
                 </div>
             </div>
@@ -65,28 +66,31 @@
                     {% endfor %}
                 </td>
                 <td>
-                    <a role="button"  href="/WorkOrder/editProduct/{{ data.id }}/" class="btn btn-primary btn-sm">编辑</a>
-                    <a role="button" href="/WorkOrder/editProduct/{{ data.id }}/delete" class="btn btn-outline-danger btn-sm" >删除</a>
+                    <a role="button" href="/WorkOrder/editProduct/{{ data.id }}/" class="btn btn-primary btn-sm">编辑</a>
+                    <button class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#staticBackdrop">删除
+                    </button>
+                    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false"
+                         tabindex="-1"
+                         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body" id="delete-err-info">
+                                    <strong>确认删除当前产品信息吗？</strong>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <a role="button" href="/WorkOrder/editProduct/{{ data.id }}/index_delete/" class="btn btn-danger">确认删除</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
-             aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body" id="delete-err-info">
-                        <strong>确认删除当前产品信息吗？</strong>
-                    </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                        <button type="button" onclick="deleteProduct()" class="btn btn-danger">确认删除</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-end">
             <li class="page-item disabled">
@@ -134,27 +138,9 @@
                 }
             )
         }
+
         function pageRefresh() {
             window.location.reload()
-        }
-        function deleteProduct() {
-            var urlPath = window.location.pathname;
-            $.ajax(
-                {
-                    type: "get",
-                    data: "json",
-                    url: urlPath + "delete",
-                    success: function (data) {
-                        if (data["status"] == "false") {
-                            $("#delete-err-info").after(
-                                "<div class='alert alert-danger' role='alert'>" + data["msg"] + "</div>"
-                            )
-                        } else if (data.status == "true") {
-                            location.href = "{% url 'workorder_index' %}"
-                        }
-                    }
-                }
-            )
         }
     </script>
 {% endblock %}

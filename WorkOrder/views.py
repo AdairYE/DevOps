@@ -4,11 +4,12 @@ from WorkOrder.froms.addProduct import addProductFrom
 from WorkOrder.froms.editProduct import editProductFrom
 from django.http import HttpResponseRedirect, JsonResponse
 
-executeInfo = {"status": "true", "msg": None}
+
 
 
 # Create your views here.
 def toIndex(request):
+    executeInfo = {"status": "true", "msg": None}
     if request.method == "GET":
         productMeta = product._meta.fields
         productData = product.objects.all()
@@ -33,6 +34,7 @@ def toIndex(request):
 
 
 def edit_product(request, id):
+    executeInfo = {"status": "true", "msg": None}
     obj = product.objects.filter(id=id).first()
     if request.method == "GET":
         editProduct = editProductFrom(instance=obj)
@@ -48,6 +50,7 @@ def edit_product(request, id):
 
 
 def delete_product(request, id):
+    executeInfo = {"status": "true", "msg": None}
     if request.method == "GET":
         try:
             product.objects.get(id=id).delete()
@@ -55,3 +58,8 @@ def delete_product(request, id):
             executeInfo["status"] = "false"
             executeInfo["msg"] = "产品删除失败：%s", err
         return JsonResponse(executeInfo)
+
+def index_delete_product(request,id):
+    if request.method == "GET":
+        product.objects.get(id=id).delete()
+        return redirect("/WorkOrder/index/")
