@@ -1,13 +1,14 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from WorkOrder.models import product
 from WorkOrder.froms.addProduct import addProductFrom
 from WorkOrder.froms.editProduct import editProductFrom
 from django.http import HttpResponseRedirect, JsonResponse
 
+executeInfo = {"status": "true", "msg": None}
+
 
 # Create your views here.
 def toIndex(request):
-    executeInfo = {"status": "true", "msg": None}
     if request.method == "GET":
         productMeta = product._meta.fields
         productData = product.objects.all()
@@ -18,7 +19,7 @@ def toIndex(request):
             {
                 "proNameList": productMeta,
                 "productData": productData,
-                "addProduct":addProduct
+                "addProduct": addProduct
             }
         )
     elif request.method == "POST":
@@ -30,18 +31,27 @@ def toIndex(request):
             executeInfo["msg"] = addProduct.errors
         return JsonResponse(executeInfo)
 
-def edit_product(request,id):
-    executeInfo = {"status": "true", "msg": None}
+
+def edit_product(request, id):
     obj = product.objects.filter(id=id).first()
     if request.method == "GET":
         editProduct = editProductFrom(instance=obj)
-        return render(request,"workorder/editProduct.html",{"editProduct":editProduct})
+        return render(request, "workorder/editProduct.html", {"editProduct": editProduct})
     elif request.method == "POST":
-        editProduct = editProductFrom(request.POST,instance=obj)
+        editProduct = editProductFrom(request.POST, instance=obj)
         if editProduct.is_valid():
             editProduct.save()
-            return redirect("/WorkOrder/index/")
         else:
             executeInfo["status"] = "false"
             executeInfo["msg"] = editProduct.errors
-            return render(request, "workorder/editProduct.html", executeInfo)
+        return JsonResponse(executeInfo)
+
+
+def delete_product(request, id):
+    if request.method == "GET":
+        try:
+            product.objects.get(id=id).delete()
+        except Exception as err:
+            executeInfo["status"] = "false"
+            executeInfo["msg"] = "产品删除失败：%s", err
+        return JsonResponse(executeInfo)
