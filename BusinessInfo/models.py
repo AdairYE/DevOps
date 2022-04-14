@@ -25,7 +25,7 @@ class product(models.Model):
     )
 
     explain = models.TextField(
-        max_length=35,
+        max_length=128,
         verbose_name="产品说明"
     )
 

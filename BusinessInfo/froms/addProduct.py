@@ -1,5 +1,5 @@
 from django import forms
-from WorkOrder.models import product
+from BusinessInfo.models import product
 from DevOps.froms import baseFroms
 
 class addProductFrom(baseFroms,forms.ModelForm):

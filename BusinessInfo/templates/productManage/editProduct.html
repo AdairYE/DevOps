@@ -13,7 +13,7 @@
 
 {% block content-head %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2"><a href="{% url 'workorder_index' %}">产品管理<a> / 编辑</h1>
+        <h1 class="h2"><a href="{% url 'BusinessInfo_index' %}">产品管理<a> / 编辑</h1>
     </div>
 {% endblock %}
 
@@ -83,7 +83,7 @@
                                 )
                             }
                         } else {
-                            location.href = "{% url 'workorder_index' %}"
+                            location.href = "{% url 'BusinessInfo_index' %}"
                         }
                     }
                 }
@@ -102,7 +102,7 @@
                                 "<div class='alert alert-danger' role='alert'>" + data["msg"] + "</div>"
                             )
                         } else if (data.status == "true") {
-                            location.href = "{% url 'workorder_index' %}"
+                            location.href = "{% url 'BusinessInfo_index' %}"
                         }
                     }
                 }
