@@ -77,7 +77,9 @@ class project(models.Model):
 
     product = models.ForeignKey(
         product,
+        null=True,
         blank=True,
+        on_delete=models.SET_NULL,
         verbose_name="关联产品"
     )
 
