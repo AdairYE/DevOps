@@ -55,14 +55,13 @@ class project(models.Model):
         unique=True,
         verbose_name="项目编码"
     )
-    startDate = models.DateTimeField(
-        default=timezone.now,
-        verbose_name="项目开始时间"
+    product = models.ForeignKey(
+        product,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name="关联产品"
     )
-    endDate = models.DateTimeField(
-        verbose_name="项目结束时间"
-    )
-
     projectType = (
         ("敏捷型", "Agile"),
         ("瀑布式", "Waterfall"),
@@ -74,15 +73,13 @@ class project(models.Model):
         verbose_name="项目类型",
         choices=projectType
     )
-
-    product = models.ForeignKey(
-        product,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        verbose_name="关联产品"
+    startDate = models.DateTimeField(
+        default=timezone.now,
+        verbose_name="项目开始时间"
     )
-
+    endDate = models.DateTimeField(
+        verbose_name="项目结束时间"
+    )
     explain = models.TextField(
         max_length=128,
         verbose_name="项目描述"
