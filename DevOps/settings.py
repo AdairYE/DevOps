@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'utils.middlewares.login.LoginVerif',
 ]
 
 ROOT_URLCONF = 'DevOps.urls'
@@ -124,3 +125,10 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 设置白名单中的url不进行登录验证
+URL_WhiteList = [
+    "/",
+    "/auth/check_code/",
+    "/auth/base/",
+]

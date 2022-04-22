@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect, HttpResponse
-from django.contrib.auth import authenticate, login, logout, handlers
+from django.shortcuts import render, HttpResponse
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, JsonResponse
 
 from Auth.froms.froms import userLogin, userRegister
 from io import BytesIO
-from utils.captcha import create_validate_code
+from utils.tools.captcha import create_validate_code
 
 
 
@@ -48,6 +48,7 @@ def indexHome(request):
                 loginCheck = authenticate(username=username, password=password)
                 if loginCheck is not None:
                     login(request, user=loginCheck)
+                    request.session['loginUser'] = username
                     request.session.set_expiry(3600)
                 else:
                     executeInfo["status"] = "false"
