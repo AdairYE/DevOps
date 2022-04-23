@@ -130,5 +130,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 URL_WhiteList = [
     "/",
     "/auth/check_code/",
-    "/auth/base/",
 ]
