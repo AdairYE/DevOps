@@ -39,7 +39,11 @@ def projectIndex(request):
             }
         )
     elif request.method == "POST":
+        request.POST._mutable = True
+        request.POST["author"] = request.user.id
         addproject = addProjectFrom(request.POST)
+        request.POST._mutable = False
+        print(request.POST)
         if addproject.is_valid():
             addproject.save()
         else:

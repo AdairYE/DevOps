@@ -22,8 +22,9 @@ class product(models.Model):
         verbose_name="产品代码"
     )
 
-    productOwner = models.ManyToManyField(
+    productOwner = models.ForeignKey(
         User,
+        on_delete=models.PROTECT,
         verbose_name="产品负责人"
     )
 
@@ -84,6 +85,20 @@ class project(models.Model):
         max_length=128,
         verbose_name="项目描述"
     )
+    author = models.ForeignKey(
+        User,
+        null=True,
+        on_delete=models.PROTECT,
+        verbose_name="项目负责人",
+        related_name="author_user"
+    )
+    participator = models.ManyToManyField(
+        User,
+        blank=True,
+        verbose_name="项目参与者",
+        related_name="participator_user"
+    )
+
 
     def __str__(self):
         return self.name
