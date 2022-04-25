@@ -52,61 +52,141 @@
         <div class="card border-warning mb-3">
             <div class="card-header">标星</div>
             <div class="card-body text-warning">
-                <h5 class="card-title">Warning card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
+                <div class="row row-cols-1 row-cols-md-3">
+                    {% if  user_StarProject %}
+                        {% for data in user_StarProject %}
+                            <div class="col mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-nowrap">
+                                            <div class="lineHidden">
+                                                <a class="text-warning"
+                                                   href="/BusinessInfo/editProject/{{ data.id }}">{{ data.name }}
+                                                    | {{ data.code }}</a>
+                                            </div>
+                                            {% if data.get_proType_display == "Agile" %}
+                                                <span class="badge badge-pill badge-success">{{ data.proType }}</span>
+                                            {% elif data.get_proType_display == "Waterfall" %}
+                                                <span class="badge badge-pill badge-primary">{{ data.proType }}</span>
+                                            {% else %}
+                                                <span class="badge badge-pill badge-warning">{{ data.proType }}</span>
+                                            {% endif %}
+                                        </h5>
+                                        <p class="card-text">
+                                            <strong>关联产品: </strong>
+                                            {% if data.product  == None %}
+                                                无
+                                            {% else %}
+                                                <a class="text-warning"
+                                                   href="/BusinessInfo/editProduct/{{ data.product.id }}/">{{ data.product }}</a>
+                                            {% endif %}
+                                        </p>
+                                        <p class="card-text"><small class="text-muted">{{ data.startDate }}
+                                            - {{ data.endDate }}</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="card-body text-success">
+                            <h5 class="card-title"><strong>目前没有我标星的项目</strong></h5>
+                            <p class="card-text">可将常用的项目设置为标星，方便重点关注！</p>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="card border-success mb-3">
             <div class="card-header">我创建的项目</div>
             <div class="card-body text-success">
-                <h5 class="card-title">Success card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
+                <div class="row row-cols-1 row-cols-md-3">
+                    {% if  user_CreateProject %}
+                        {% for data in user_CreateProject %}
+                            <div class="col mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-nowrap">
+                                            <div class="lineHidden">
+                                                <a class="text-success"
+                                                   href="/BusinessInfo/editProject/{{ data.id }}">{{ data.name }}
+                                                    | {{ data.code }}</a>
+                                            </div>
+                                            {% if data.get_proType_display == "Agile" %}
+                                                <span class="badge badge-pill badge-success">{{ data.proType }}</span>
+                                            {% elif data.get_proType_display == "Waterfall" %}
+                                                <span class="badge badge-pill badge-primary">{{ data.proType }}</span>
+                                            {% else %}
+                                                <span class="badge badge-pill badge-warning">{{ data.proType }}</span>
+                                            {% endif %}
+                                        </h5>
+                                        <p class="card-text">
+                                            <strong>关联产品: </strong>
+                                            {% if data.product  == None %}
+                                                无
+                                            {% else %}
+                                                <a class="text-success"
+                                                   href="/BusinessInfo/editProduct/{{ data.product.id }}/">{{ data.product }}</a>
+                                            {% endif %}
+                                        </p>
+                                        <p class="card-text"><small class="text-muted">{{ data.startDate }}
+                                            - {{ data.endDate }}</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="card-body text-success">
+                            <h5 class="card-title"><strong>目前没有我创建的项目</strong></h5>
+                            <p class="card-text">该用户没有创建自己的项目，可通过右上角“创建项目”创建属于自己的项目！</p>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="card border-info mb-3">
             <div class="card-header">我参与的项目</div>
             <div class="card-body text-info">
                 <div class="row row-cols-1 row-cols-md-3">
-                {% if  projectData %}
-                    {% for data in projectData %}
-                        <div class="col mb-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title text-nowrap">
-                                        <div class="lineHidden">
-                                            <a class="text-info" href="/BusinessInfo/editProject/{{ data.id }}">{{ data.name }}
-                                                | {{ data.code }}</a>
-                                        </div>
-                                        {% if data.get_proType_display == "Agile" %}
-                                            <span class="badge badge-pill badge-success">{{ data.proType }}</span>
-                                        {% elif data.get_proType_display == "Waterfall" %}
-                                            <span class="badge badge-pill badge-primary">{{ data.proType }}</span>
-                                        {% else %}
-                                            <span class="badge badge-pill badge-warning">{{ data.proType }}</span>
-                                        {% endif %}
-                                    </h5>
-                                    <p class="card-text">
-                                        <strong>关联产品: </strong>
-                                        {% if data.product  == None %}
-                                            无
-                                        {% else %}
-                                             <a class="text-info" href="/BusinessInfo/editProduct/{{ data.product.id }}/">{{ data.product }}</a>
-                                        {% endif %}
-                                    </p>
-                                    <p class="card-text"><small class="text-muted">{{ data.startDate }}
-                                        - {{ data.endDate }}</small></p>
+                    {% if  user_PartProject %}
+                        {% for data in user_PartProject %}
+                            <div class="col mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-nowrap">
+                                            <div class="lineHidden">
+                                                <a class="text-info"
+                                                   href="/BusinessInfo/editProject/{{ data.id }}">{{ data.name }}
+                                                    | {{ data.code }}</a>
+                                            </div>
+                                            {% if data.get_proType_display == "Agile" %}
+                                                <span class="badge badge-pill badge-success">{{ data.proType }}</span>
+                                            {% elif data.get_proType_display == "Waterfall" %}
+                                                <span class="badge badge-pill badge-primary">{{ data.proType }}</span>
+                                            {% else %}
+                                                <span class="badge badge-pill badge-warning">{{ data.proType }}</span>
+                                            {% endif %}
+                                        </h5>
+                                        <p class="card-text">
+                                            <strong>关联产品: </strong>
+                                            {% if data.product  == None %}
+                                                无
+                                            {% else %}
+                                                <a class="text-info"
+                                                   href="/BusinessInfo/editProduct/{{ data.product.id }}/">{{ data.product }}</a>
+                                            {% endif %}
+                                        </p>
+                                        <p class="card-text"><small class="text-muted">{{ data.startDate }}
+                                            - {{ data.endDate }}</small></p>
+                                    </div>
                                 </div>
                             </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="card-body text-info">
+                            <h5 class="card-title"><strong>目前没有我参与的项目</strong></h5>
+                            <p class="card-text">项目创建人邀请关联人后，该项目就属于关联人的参与者。</p>
                         </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="card-body text-info">
-                <h5 class="card-title"><strong>目前没有我参与的项目</strong></h5>
-                <p class="card-text">项目创建人邀请关联人后，该项目就属于关联人的参与者。</p>
-            </div>
-                {% endif %}
+                    {% endif %}
                 </div>
             </div>
         </div>

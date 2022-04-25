@@ -1,9 +1,8 @@
 from django.db import models
 
-
 # Create your models here.
 
-# 菜单
+
 # 父级菜单
 class parentMenus(models.Model):
     name = models.CharField(
@@ -20,7 +19,7 @@ class parentMenus(models.Model):
     class Meta:
         verbose_name = "父级菜单"
         verbose_name_plural = verbose_name
-
+# 菜单
 class Menus(models.Model):
     name = models.CharField(
         max_length=32,
@@ -58,4 +57,3 @@ class Menus(models.Model):
     class Meta:
         verbose_name = "菜单"
         verbose_name_plural = verbose_name
-

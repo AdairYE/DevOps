@@ -98,7 +98,10 @@ class project(models.Model):
         verbose_name="项目参与者",
         related_name="participator_user"
     )
-
+    star = models.ForeignKey(User,
+                             on_delete=models.PROTECT,
+                             null=True,
+                             verbose_name="标星项目")
 
     def __str__(self):
         return self.name
