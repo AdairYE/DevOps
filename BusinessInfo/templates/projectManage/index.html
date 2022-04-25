@@ -89,7 +89,11 @@
                                     </h5>
                                     <p class="card-text">
                                         <strong>关联产品: </strong>
-                                        <a class="text-info" href="/BusinessInfo/editProduct/{{ data.product.id }}/">{{ data.product }}</a>
+                                        {% if data.product  == None %}
+                                            无
+                                        {% else %}
+                                             <a class="text-info" href="/BusinessInfo/editProduct/{{ data.product.id }}/">{{ data.product }}</a>
+                                        {% endif %}
                                     </p>
                                     <p class="card-text"><small class="text-muted">{{ data.startDate }}
                                         - {{ data.endDate }}</small></p>
