@@ -9,31 +9,28 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, Invali
 def toIndex(request):
     executeInfo = {"status": "true", "msg": None}
     if request.method == "GET":
-        productMeta = product._meta.fields
-        productData = product.objects.all().order_by("-id")
-        addProduct = addProductFrom()
+        productData = []
+        productInfo = {}
 
-        paginator = Paginator(productData, 10)
-        page = request.GET.get('page')
-        try:
-            productData = paginator.page(page)
-        except PageNotAnInteger:
-            # 如果请求的页数不是整数, 返回第一页。
-            productData = paginator.page(1)
-        except InvalidPage:
-            # 如果请求的页数不存在, 重定向页面
-            productData = paginator.page(paginator.num_pages)
-        except EmptyPage:
-            # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
-            productData = paginator.page(paginator.num_pages)
+        starProduct = product.objects.filter(star=request.user).order_by('-id')
+        productInfo["name"] = "starProduct"
+        productInfo["data"] = starProduct
+        productData.append(productInfo)
+
+        productInfo["name"] = "user_CreateProduct"
+        productInfo["data"] = product.objects.filter(productOwner=request.user).exclude(id__in=starProduct).order_by("-id")
+        productData.append(productInfo)
+
+        productInfo["name"] = "user_PartProject"
+        productInfo["data"] = product.objects.filter(participator=request.user).exclude(id__in=starProduct).order_by("-id")
+        productData.append(productInfo)
+
+        print(productData)
         return render(
             request,
             "productManage/index.html",
             {
-                "proNameList": productMeta,
                 "productData": productData,
-                "addProduct": addProduct,
-                "paginator":paginator
             }
         )
     elif request.method == "POST":

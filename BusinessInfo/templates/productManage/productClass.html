@@ -1,0 +1,71 @@
+<!-- 产品分类 -->
+
+{% for data in productData %}
+    <div class="card">
+        {% if data.name == "starProduct" %}
+            <div class="card-header">
+                标星
+            </div>
+
+            <div class="card-body">
+                <div class="row row-cols-1 row-cols-md-3">
+                    <div class="col mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-body text-warning">
+                                    <h5 class="card-title">Warning card title</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                        the
+                                        bulk of
+                                        the card's content.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% elif data.name == "user_CreateProduct" %}
+            <div class="card-header">
+                我创建的产品
+            </div>
+            <div class="card-body">
+                <div class="row row-cols-1 row-cols-md-3">
+                    <div class="col mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-body text-success">
+                                    <h5 class="card-title">Warning card title</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                        the
+                                        bulk of
+                                        the card's content.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% elif data.name == "user_PartProject" %}
+            <div class="card-header">
+                我参与的项目
+            </div>
+            <div class="card-body">
+                <div class="row row-cols-1 row-cols-md-3">
+                    <div class="col mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-body text-info">
+                                    <h5 class="card-title">Warning card title</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                        the
+                                        bulk of
+                                        the card's content.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endfor %}

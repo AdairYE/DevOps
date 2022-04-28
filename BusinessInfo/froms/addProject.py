@@ -5,4 +5,4 @@ from BusinessInfo.models import project
 class addProjectFrom(baseFroms,forms.ModelForm):
     class Meta:
         model = project
-        exclude = ["author"]
+        exclude = ["author","star"]

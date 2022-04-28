@@ -25,14 +25,24 @@ class product(models.Model):
     productOwner = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
-        verbose_name="产品负责人"
+        verbose_name="产品负责人",
+        related_name="product_author_user"
+    )
+    participator = models.ManyToManyField(
+        User,
+        blank=True,
+        verbose_name="产品参与者",
+        related_name="product_participator_user"
     )
 
     explain = models.TextField(
         max_length=128,
         verbose_name="产品说明"
     )
-
+    star = models.ForeignKey(User,
+                             on_delete=models.PROTECT,
+                             null=True,
+                             verbose_name="标星产品")
     def __str__(self):
         return self.name
 
@@ -90,13 +100,13 @@ class project(models.Model):
         null=True,
         on_delete=models.PROTECT,
         verbose_name="项目负责人",
-        related_name="author_user"
+        related_name="project_author_user"
     )
     participator = models.ManyToManyField(
         User,
         blank=True,
         verbose_name="项目参与者",
-        related_name="participator_user"
+        related_name="project_participator_user"
     )
     star = models.ForeignKey(User,
                              on_delete=models.PROTECT,
