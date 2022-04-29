@@ -24,6 +24,7 @@ class product(models.Model):
 
     productOwner = models.ForeignKey(
         User,
+        null=True,
         on_delete=models.PROTECT,
         verbose_name="产品负责人",
         related_name="product_author_user"

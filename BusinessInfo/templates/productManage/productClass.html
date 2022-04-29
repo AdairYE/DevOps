@@ -1,71 +1,92 @@
 <!-- 产品分类 -->
+{% load static %}
 
-{% for data in productData %}
-    <div class="card">
-        {% if data.name == "starProduct" %}
-            <div class="card-header">
-                标星
-            </div>
+{% for proKey,prodata in productData.items %}
 
-            <div class="card-body">
-                <div class="row row-cols-1 row-cols-md-3">
-                    <div class="col mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-body text-warning">
-                                    <h5 class="card-title">Warning card title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of
-                                        the card's content.</p>
+    {% if proKey == "starProduct" %}
+
+        <div class="card bg-light">
+            <div class="card-header">标星</div>
+
+            {% if prodata %}
+                <div class="card-body  row row-cols-3 row-cols-md-3">
+                    {% for data in prodata %}
+                        <div class="col mb-4">
+                            <div class="card">
+                                <img src="{% static 'img/product1.jpg' %}" class="card-img-top" alt="{{ data.name }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ data.name }} | {{ data.code }}</h5>
+                                    <p class="card-text">{{ data.explain }}</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
-            </div>
-        {% elif data.name == "user_CreateProduct" %}
-            <div class="card-header">
-                我创建的产品
-            </div>
-            <div class="card-body">
-                <div class="row row-cols-1 row-cols-md-3">
-                    <div class="col mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-body text-success">
-                                    <h5 class="card-title">Warning card title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of
-                                        the card's content.</p>
+            {% else %}
+                <div class="card-body">
+                    <h5 class="card-title">目前没有标星的产品</h5>
+                    <p class="card-text">可将常用的产品设置为标星，方便重点关注！</p>
+                </div>
+            {% endif %}
+
+        </div>
+
+    {% elif proKey == "user_CreateProduct" %}
+
+        <div class="card bg-light">
+            <div class="card-header">我创建的产品</div>
+
+            {% if prodata %}
+                <div class="card-body  row row-cols-3 row-cols-md-3">
+                    {% for data in prodata %}
+                        <div class="col mb-4">
+                            <div class="card">
+                                <img src="{% static 'img/product2.jpg' %}" class="card-img-top" alt="{{ data.name }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ data.name }} | {{ data.code }}</h5>
+                                    <p class="card-text">{{ data.explain }}</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
-            </div>
-        {% elif data.name == "user_PartProject" %}
-            <div class="card-header">
-                我参与的项目
-            </div>
-            <div class="card-body">
-                <div class="row row-cols-1 row-cols-md-3">
-                    <div class="col mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-body text-info">
-                                    <h5 class="card-title">Warning card title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of
-                                        the card's content.</p>
+            {% else %}
+                <div class="card-body">
+                    <h5 class="card-title">目前没有我创建的产品</h5>
+                    <p class="card-text">该用户没有创建自己的产品，可通过右上角“创建产品”创建属于自己的产品！</p>
+                </div>
+            {% endif %}
+
+        </div>
+
+    {% elif proKey == "user_PartProject" %}
+
+        <div class="card bg-light">
+            <div class="card-header">我参与的产品</div>
+            {% if prodata %}
+                <div class="card-body  row row-cols-3 row-cols-md-3">
+
+                    {% for data in prodata %}
+                        <div class="col mb-4">
+                            <div class="card">
+                                <img src="{% static 'img/product3.jpg' %}" class="card-img-top" alt="{{ data.name }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ data.name }} | {{ data.code }}</h5>
+                                    <p class="card-text">{{ data.explain }}</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
+
                 </div>
-            </div>
-        {% endif %}
-    </div>
+            {% else %}
+                <div class="card-body">
+                    <h5 class="card-title">目前没有我参与的产品</h5>
+                    <p class="card-text">产品创建人邀请关联人后，该产品就属于关联人的参与者。</p>
+                </div>
+            {% endif %}
+        </div>
+
+    {% endif %}
+
 {% endfor %}
