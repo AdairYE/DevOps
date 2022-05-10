@@ -1,7 +1,9 @@
 
 <!-- 我参与的项目 -->
 <div class="card border-info mb-3">
-            <div class="card-header">我参与的项目</div>
+            <div class="card-header">
+                <i class="fa fa-handshake-o"></i>
+                我参与的项目</div>
             <div class="card-body text-info">
                 <div class="row row-cols-1 row-cols-md-3">
                     {% if  user_PartProject %}
@@ -11,8 +13,9 @@
                                     <div class="card-body">
                                         <h5 class="card-title text-nowrap">
                                             <div class="lineHidden">
+                                                <i class="fa fa-star-o" onclick="signStar(this,{{ data.id }})"></i>
                                                 <a class="text-info"
-                                                   href="/BusinessInfo/editProject/{{ data.id }}">{{ data.name }}
+                                                   href="/BusinessInfo/detailProject/{{ data.id }}">{{ data.name }}
                                                     | {{ data.code }}</a>
                                             </div>
                                             {% if data.get_proType_display == "Agile" %}

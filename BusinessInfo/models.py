@@ -40,10 +40,9 @@ class product(models.Model):
         max_length=128,
         verbose_name="产品说明"
     )
-    star = models.ForeignKey(User,
-                             on_delete=models.PROTECT,
-                             null=True,
-                             verbose_name="标星产品")
+    star = models.ManyToManyField(User,
+                                  verbose_name="标星产品")
+
     def __str__(self):
         return self.name
 
@@ -90,6 +89,7 @@ class project(models.Model):
         verbose_name="项目开始时间"
     )
     endDate = models.DateTimeField(
+        default=timezone.now,
         verbose_name="项目结束时间"
     )
     explain = models.TextField(
@@ -109,10 +109,9 @@ class project(models.Model):
         verbose_name="项目参与者",
         related_name="project_participator_user"
     )
-    star = models.ForeignKey(User,
-                             on_delete=models.PROTECT,
-                             null=True,
-                             verbose_name="标星项目")
+    star = models.ManyToManyField(User,
+                                       verbose_name="标星项目"
+                                       )
 
     def __str__(self):
         return self.name

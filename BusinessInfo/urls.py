@@ -3,13 +3,15 @@ from django.urls import path
 from BusinessInfo import views
 
 urlpatterns = [
+    # 产品
     path('index/', views.toIndex, name="BusinessInfo_index"),
-    path('editProduct/<str:id>/', views.edit_product, name="edit_product"),
-    path('editProduct/<str:id>/delete/', views.delete_product, name="delete_product"),
-    path('editProduct/<str:id>/index_delete/', views.index_delete_product, name="indexdelete_product"),
+    path('Product/star/', views.star_product, name="star_product"),
+    path('Product/cancelStar/', views.cancelStar_product, name="cancelStar_product"),
+    path('detailProduct/<str:id>/', views.detail_product, name="detail_product"),
 
+    # 项目
     path('project/index/', views.projectIndex, name="project_index"),
-    path('editProject/<str:id>/', views.edit_project, name="edit_project"),
-    path('editProject/<str:id>/delete/', views.delete_project, name="delete_project"),
-    path('editProject/<str:id>/index_delete/', views.index_delete_project, name="indexdelete_project"),
+    path('detailProject/<str:id>/', views.detail_project, name="detail_project"),
+    path('project/star/', views.star_project, name="star_project"),
+    path('project/cancelStar/', views.cancelStar_project, name="cancelStar_project"),
 ]

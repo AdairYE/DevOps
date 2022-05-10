@@ -1,6 +1,8 @@
 <!-- 我创建的项目 -->
 <div class="card border-success mb-3">
-            <div class="card-header">我创建的项目</div>
+            <div class="card-header">
+                <i class="fa fa-list-ul"></i>
+                我创建的项目</div>
             <div class="card-body text-success">
                 <div class="row row-cols-1 row-cols-md-3">
                     {% if  user_CreateProject %}
@@ -10,8 +12,9 @@
                                     <div class="card-body">
                                         <h5 class="card-title text-nowrap">
                                             <div class="lineHidden">
+                                                <i class="fa fa-star-o" onclick="signStar(this,{{ data.id }})"></i>
                                                 <a class="text-success"
-                                                   href="/BusinessInfo/editProject/{{ data.id }}">{{ data.name }}
+                                                   href="/BusinessInfo/detailProject/{{ data.id }}">{{ data.name }}
                                                     | {{ data.code }}</a>
                                             </div>
                                             {% if data.get_proType_display == "Agile" %}
@@ -28,7 +31,7 @@
                                                 无
                                             {% else %}
                                                 <a class="text-success"
-                                                   href="/BusinessInfo/editProduct/{{ data.product.id }}/">{{ data.product }}</a>
+                                                   href="/BusinessInfo/detailProduct/{{ data.product.id }}/">{{ data.product }}</a>
                                             {% endif %}
                                         </p>
                                         <p class="card-text"><small class="text-muted">{{ data.startDate }}

@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Ye xiaohei">
+    <meta name="generator" content="Hugo 0.91.2">
+    <title>小黑屋 · DevOps</title>
+
+    <link rel="canonical" href="https://v4.bootcss.com/docs/examples/pricing/">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.css' %}"
+          rel="stylesheet"
+          crossorigin="anonymous">
+
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="{% static "img/house-fill.svg" %}" sizes="180x180">
+    <link rel="icon" href="{% static "img/house-fill.svg" %}" sizes="32x32" type="image/png">
+    <link rel="icon" href="{% static "img/house-fill.svg" %}" sizes="16x16" type="image/png">
+    <link rel="manifest" href="{% static "img/house-fill.svg" %}">
+    <link rel="mask-icon" href="{% static "img/house-fill.svg" %}" color="#563d7c">
+    <link rel="icon" href="{% static "img/house-fill.svg" %}">
+    <meta name="msapplication-config" content="/docs/4.6/assets/img/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#563d7c">
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/pricing.css' %}"
+          rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-white border-bottom shadow-sm">
+    <a class="navbar-brand text-dark" href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="18" fill="currentColor"
+             class="bi bi-house-fill" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+            <path fill-rule="evenodd"
+                  d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+        </svg>
+        小 黑 屋
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03"
+            aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse text-dark" id="navbarsExample03">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item text-dark dropdown">
+                <a class="nav-link text-dark dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown"
+                   aria-expanded="false">产品</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown03">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+            <li class="nav-item text-dark dropdown">
+                <a class="nav-link text-dark dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown"
+                   aria-expanded="false">项目</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown03">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark disabled">工单</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark disabled">文档</a>
+            </li>
+        </ul>
+
+        <ul class="nav px-3">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarScrollingDropdown" role="button"
+                   data-toggle="dropdown" aria-expanded="false">
+                    {{ user.get_username }}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarScrollingDropdown">
+                    <li><a class="dropdown-item" href="#">用户管理</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">退出</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">{{ productInfo.name }}</h1>
+    <p class="lead">Quickly build an effective pricing table for your
+        potential customers with this Bootstrap example. It’s built with default
+        Bootstrap components and utilities with little customization.</p>
+</div>
+
+
+<script src="{% static 'js/jquery.js' %}" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="{% static 'js/jquery.slim.min.js' %}"><\/script>')</script>
+<script src="{% static 'js/bootstrap.js' %}"
+        crossorigin="anonymous"></script>
+
+
+</body>
+<div id="edge-translate-notifier-container" class="edge-translate-notifier-center"></div>
+</html>

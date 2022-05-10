@@ -5,8 +5,8 @@ from django.shortcuts import render, redirect
 from BusinessInfo.models import project
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
 from BusinessInfo.froms.addProject import addProjectFrom
-from BusinessInfo.froms.editProject import editProjectFrom
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 
 
 def projectIndex(request):
@@ -43,34 +43,26 @@ def projectIndex(request):
         return JsonResponse(executeInfo)
 
 
-def edit_project(request, id):
-    executeInfo = {"status": "true", "msg": None}
+def detail_project(request, id):
     obj = project.objects.filter(id=id).first()
     if request.method == "GET":
-        editProject = editProjectFrom(instance=obj)
-        return render(request, "projectManage/editProject.html", {"editProject": editProject})
-    elif request.method == "POST":
-        editProject = editProjectFrom(request.POST, instance=obj)
-        if editProject.is_valid():
-            editProject.save()
-        else:
-            executeInfo["status"] = "false"
-            executeInfo["msg"] = editProject.errors
-        return JsonResponse(executeInfo)
+        return render(request, "details/detail.html", {"editProject": obj})
 
 
-def delete_project(request, id):
+# 项目标星
+def star_project(request):
     executeInfo = {"status": "true", "msg": None}
     if request.method == "GET":
-        try:
-            project.objects.get(id=id).delete()
-        except Exception as err:
-            executeInfo["status"] = "false"
-            executeInfo["msg"] = "项目删除失败：%s", err
+        productID = request.GET["id"]
+        username = User.objects.get(username=request.user)
+        project.objects.get(id=productID).star.add(username)
         return JsonResponse(executeInfo)
 
-
-def index_delete_project(request, id):
+# 取消标星
+def cancelStar_project(request):
+    executeInfo = {"status": "true", "msg": None}
     if request.method == "GET":
-        project.objects.get(id=id).delete()
-        return redirect("/BusinessInfo/project/index/")
+        productID = request.GET["id"]
+        username = User.objects.get(username=request.user)
+        project.objects.get(id=productID).star.remove(username)
+        return JsonResponse(executeInfo)

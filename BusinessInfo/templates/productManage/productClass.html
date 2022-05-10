@@ -5,17 +5,23 @@
 
     {% if proKey == "starProduct" %}
 
-        <div class="card bg-light">
-            <div class="card-header">标星</div>
+        <div class="card bg-light mb-3">
+            <div class="card-header">
+                <i class="fa fa-star-o"></i>
+                标星</div>
 
             {% if prodata %}
                 <div class="card-body  row row-cols-3 row-cols-md-3">
                     {% for data in prodata %}
-                        <div class="col mb-4">
+                        <div class="card-deck col mb-4">
                             <div class="card">
                                 <img src="{% static 'img/product1.jpg' %}" class="card-img-top" alt="{{ data.name }}">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ data.name }} | {{ data.code }}</h5>
+                                    <h5 class="card-title"><i class="fa fa-star-o icon-star" onclick="cancelStar(this,{{ data.id }})"></i>
+                                        <a class="text-muted" href="/BusinessInfo/detailProduct/{{ data.id }}">
+                                            {{ data.name }} | {{ data.code }}
+                                        </a>
+                                    </h5>
                                     <p class="card-text">{{ data.explain }}</p>
                                 </div>
                             </div>
@@ -23,7 +29,7 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <div class="card-body">
+                <div class="card-body text-warning">
                     <h5 class="card-title">目前没有标星的产品</h5>
                     <p class="card-text">可将常用的产品设置为标星，方便重点关注！</p>
                 </div>
@@ -33,17 +39,24 @@
 
     {% elif proKey == "user_CreateProduct" %}
 
-        <div class="card bg-light">
-            <div class="card-header">我创建的产品</div>
+        <div class="card bg-light mb-3">
+            <div class="card-header">
+                <i class="fa fa-list-ul"></i>
+                我创建的产品</div>
 
             {% if prodata %}
                 <div class="card-body  row row-cols-3 row-cols-md-3">
                     {% for data in prodata %}
-                        <div class="col mb-4">
+                        <div class="card-deck col mb-4">
                             <div class="card">
                                 <img src="{% static 'img/product2.jpg' %}" class="card-img-top" alt="{{ data.name }}">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ data.name }} | {{ data.code }}</h5>
+                                    <h5 class="card-title">
+                                        <i class="fa fa-star-o" onclick="signStar(this,{{ data.id }})"></i>
+                                        <a class="text-muted" href="/BusinessInfo/detailProduct/{{ data.id }}">
+                                        {{ data.name }} | {{ data.code }}
+                                        </a>
+                                    </h5>
                                     <p class="card-text">{{ data.explain }}</p>
                                 </div>
                             </div>
@@ -51,7 +64,7 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <div class="card-body">
+                <div class="card-body text-success">
                     <h5 class="card-title">目前没有我创建的产品</h5>
                     <p class="card-text">该用户没有创建自己的产品，可通过右上角“创建产品”创建属于自己的产品！</p>
                 </div>
@@ -61,17 +74,24 @@
 
     {% elif proKey == "user_PartProject" %}
 
-        <div class="card bg-light">
-            <div class="card-header">我参与的产品</div>
+        <div class="card bg-light mb-3">
+            <div class="card-header">
+                <i class="fa fa-handshake-o"></i>
+                我参与的产品</div>
             {% if prodata %}
-                <div class="card-body  row row-cols-3 row-cols-md-3">
+
+                <div class="card-body  row row-cols-4 row-cols-md-3">
 
                     {% for data in prodata %}
-                        <div class="col mb-4">
+                        <div class="card-deck col mb-4">
                             <div class="card">
                                 <img src="{% static 'img/product3.jpg' %}" class="card-img-top" alt="{{ data.name }}">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ data.name }} | {{ data.code }}</h5>
+                                    <h5 class="card-title"><i class="fa fa-star-o" onclick="signStar(this,{{ data.id }})"></i>
+                                        <a class="text-muted" href="/BusinessInfo/detailProduct/{{ data.id }}">
+                                        {{ data.name }} | {{ data.code }}
+                                        </a>
+                                    </h5>
                                     <p class="card-text">{{ data.explain }}</p>
                                 </div>
                             </div>
@@ -80,7 +100,7 @@
 
                 </div>
             {% else %}
-                <div class="card-body">
+                <div class="card-body text-info">
                     <h5 class="card-title">目前没有我参与的产品</h5>
                     <p class="card-text">产品创建人邀请关联人后，该产品就属于关联人的参与者。</p>
                 </div>
@@ -90,3 +110,41 @@
     {% endif %}
 
 {% endfor %}
+
+{% block js %}
+    <script>
+    // 标星
+    function signStar(star,id) {
+        $.ajax(
+            {
+                url:"{% url 'star_product' %}",
+                type:"GET",
+                dataType:"json",
+                data:{"id":id},
+                success:function (data) {
+                    $(star).addClass("icon-star")
+                    window.location.reload()
+                }
+            }
+        )
+
+    }
+
+    // 取消标星
+    function cancelStar(star,id) {
+        $.ajax(
+            {
+                url:"{% url 'cancelStar_product' %}",
+                type: "GET",
+                dataType: "json",
+                data:{"id":id},
+                success:function (data) {
+                    $(star).removeClass("icon-star")
+                    window.location.reload()
+                }
+                
+            }
+        )
+    }
+    </script>
+{% endblock %}

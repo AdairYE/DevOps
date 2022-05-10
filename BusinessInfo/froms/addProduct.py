@@ -5,4 +5,4 @@ from DevOps.froms import baseFroms
 class addProductFrom(baseFroms,forms.ModelForm):
     class Meta:
         model = product
-        fields = ["name", "code", "explain","participator"]
+        fields = ["name", "code", "explain"]

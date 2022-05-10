@@ -96,5 +96,39 @@
         function pageRefresh() {
             window.location.reload()
         }
+
+        // 项目标星
+        function signStar(star, id) {
+            $.ajax(
+                {
+                    url: "{% url 'star_project' %}",
+                    type: "GET",
+                    dataType: "json",
+                    data: {"id": id},
+                    success: function (data) {
+                        $(star).addClass("icon-star")
+                        window.location.reload()
+                    }
+                }
+            )
+
+        }
+
+        // 取消标星
+        function cancelStar(star, id) {
+            $.ajax(
+                {
+                    url: "{% url 'cancelStar_project' %}",
+                    type: "GET",
+                    dataType: "json",
+                    data: {"id": id},
+                    success: function (data) {
+                        $(star).removeClass("icon-star")
+                        window.location.reload()
+                    }
+
+                }
+            )
+        }
     </script>
 {% endblock %}
