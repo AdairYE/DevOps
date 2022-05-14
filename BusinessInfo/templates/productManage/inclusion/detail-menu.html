@@ -1,0 +1,39 @@
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item text-dark dropdown mr-4">
+        <a class="nav-link text-dark dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown"
+           aria-expanded="false">产品 : <span class="badge badge-light">{{ Current }}</span></a>
+        <div class="dropdown-menu" aria-labelledby="dropdown03">
+            {% for menukey,menus in productData.items %}
+                {% if menukey == "starProduct" %}
+                    <span class="font-weight-bold p-2"><i class="fa fa-star-o"></i> 标星</span>
+                {% elif menukey == "user_CreateProduct" %}
+                    <span class="font-weight-bold p-2"><i class="fa fa-list-ul"></i> 我创建的</span>
+                {% elif menukey == "user_PartProject" %}
+                    <span class="font-weight-bold p-2"><i class="fa fa-handshake-o"></i> 我参与的</span>
+                {% endif %}
+                <div class="dropdown-divider"></div>
+                {% for menu in menus %}
+                    <a class="dropdown-item" href="{% url 'detail_product_dashboard' id=menu.id %}">{{ menu.name }}</a>
+                {% endfor %}
+                <div class="dropdown-divider"></div>
+            {% endfor %}
+
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'detail_product_dashboard' id="all" %}">所有产品</a>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="{% url 'detail_product_dashboard' id=Current.id %}">仪表盘</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="{% url 'detail_product_workorder' id=Current.id %}">需求</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="{% url 'detail_product_wiki' id=Current.id %}">文档</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="{% url 'detail_product_setting' id=Current.id %}">设置</a>
+    </li>
+</ul>
+

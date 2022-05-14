@@ -16,7 +16,7 @@
                                         <div class="lineHidden">
                                             <i class="fa fa-star-o icon-star" onclick="cancelStar(this,{{ data.id }})"></i>
                                             <a class="text-warning"
-                                               href="/BusinessInfo/detailProject/{{ data.id }}">{{ data.name }}
+                                               href="{% url 'detail_project' id=data.id %}">{{ data.name }}
                                                 | {{ data.code }}</a>
                                         </div>
                                         {% if data.get_proType_display == "Agile" %}
@@ -33,7 +33,7 @@
                                             无
                                         {% else %}
                                             <a class="text-warning"
-                                               href="/BusinessInfo/editProduct/{{ data.product.id }}/">{{ data.product }}</a>
+                                               href="{% url 'detail_product' id=data.product.id %}">{{ data.product }}</a>
                                         {% endif %}
                                     </p>
                                     <p class="card-text"><small class="text-muted">{{ data.startDate }}

@@ -52,7 +52,7 @@
                 {
                     type: "POST",
                     dataType: "json",
-                    url: "{% url 'BusinessInfo_index' %}",
+                    url: "{% url 'product_index' %}",
                     data: $("#addProductInfo").serialize(),
                     headers: {"X-CSRFToken": "{{ csrf_token }}"}, //Django中表单提交都需要csrf验证
                     success: function (data) {

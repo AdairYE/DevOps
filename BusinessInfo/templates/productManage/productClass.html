@@ -8,7 +8,8 @@
         <div class="card bg-light mb-3">
             <div class="card-header">
                 <i class="fa fa-star-o"></i>
-                标星</div>
+                标星
+            </div>
 
             {% if prodata %}
                 <div class="card-body  row row-cols-3 row-cols-md-3">
@@ -17,8 +18,9 @@
                             <div class="card">
                                 <img src="{% static 'img/product1.jpg' %}" class="card-img-top" alt="{{ data.name }}">
                                 <div class="card-body">
-                                    <h5 class="card-title"><i class="fa fa-star-o icon-star" onclick="cancelStar(this,{{ data.id }})"></i>
-                                        <a class="text-muted" href="/BusinessInfo/detailProduct/{{ data.id }}">
+                                    <h5 class="card-title"><i class="fa fa-star-o icon-star"
+                                                              onclick="cancelStar(this,{{ data.id }})"></i>
+                                        <a class="text-muted" href="{% url 'detail_product_dashboard' id=data.id %}">
                                             {{ data.name }} | {{ data.code }}
                                         </a>
                                     </h5>
@@ -42,7 +44,8 @@
         <div class="card bg-light mb-3">
             <div class="card-header">
                 <i class="fa fa-list-ul"></i>
-                我创建的产品</div>
+                我创建的产品
+            </div>
 
             {% if prodata %}
                 <div class="card-body  row row-cols-3 row-cols-md-3">
@@ -53,8 +56,8 @@
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         <i class="fa fa-star-o" onclick="signStar(this,{{ data.id }})"></i>
-                                        <a class="text-muted" href="/BusinessInfo/detailProduct/{{ data.id }}">
-                                        {{ data.name }} | {{ data.code }}
+                                        <a class="text-muted" href="{% url 'detail_product_dashboard' id=data.id %}">
+                                            {{ data.name }} | {{ data.code }}
                                         </a>
                                     </h5>
                                     <p class="card-text">{{ data.explain }}</p>
@@ -77,7 +80,8 @@
         <div class="card bg-light mb-3">
             <div class="card-header">
                 <i class="fa fa-handshake-o"></i>
-                我参与的产品</div>
+                我参与的产品
+            </div>
             {% if prodata %}
 
                 <div class="card-body  row row-cols-4 row-cols-md-3">
@@ -87,9 +91,10 @@
                             <div class="card">
                                 <img src="{% static 'img/product3.jpg' %}" class="card-img-top" alt="{{ data.name }}">
                                 <div class="card-body">
-                                    <h5 class="card-title"><i class="fa fa-star-o" onclick="signStar(this,{{ data.id }})"></i>
-                                        <a class="text-muted" href="/BusinessInfo/detailProduct/{{ data.id }}">
-                                        {{ data.name }} | {{ data.code }}
+                                    <h5 class="card-title"><i class="fa fa-star-o"
+                                                              onclick="signStar(this,{{ data.id }})"></i>
+                                        <a class="text-muted" href="{% url 'detail_product_dashboard' id=data.id %}">
+                                            {{ data.name }} | {{ data.code }}
                                         </a>
                                     </h5>
                                     <p class="card-text">{{ data.explain }}</p>
@@ -113,38 +118,38 @@
 
 {% block js %}
     <script>
-    // 标星
-    function signStar(star,id) {
-        $.ajax(
-            {
-                url:"{% url 'star_product' %}",
-                type:"GET",
-                dataType:"json",
-                data:{"id":id},
-                success:function (data) {
-                    $(star).addClass("icon-star")
-                    window.location.reload()
+        // 标星
+        function signStar(star, id) {
+            $.ajax(
+                {
+                    url: "{% url 'star_product' %}",
+                    type: "GET",
+                    dataType: "json",
+                    data: {"id": id},
+                    success: function (data) {
+                        $(star).addClass("icon-star")
+                        window.location.reload()
+                    }
                 }
-            }
-        )
+            )
 
-    }
+        }
 
-    // 取消标星
-    function cancelStar(star,id) {
-        $.ajax(
-            {
-                url:"{% url 'cancelStar_product' %}",
-                type: "GET",
-                dataType: "json",
-                data:{"id":id},
-                success:function (data) {
-                    $(star).removeClass("icon-star")
-                    window.location.reload()
+        // 取消标星
+        function cancelStar(star, id) {
+            $.ajax(
+                {
+                    url: "{% url 'cancelStar_product' %}",
+                    type: "GET",
+                    dataType: "json",
+                    data: {"id": id},
+                    success: function (data) {
+                        $(star).removeClass("icon-star")
+                        window.location.reload()
+                    }
+
                 }
-                
-            }
-        )
-    }
+            )
+        }
     </script>
 {% endblock %}

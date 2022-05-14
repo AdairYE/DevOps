@@ -40,10 +40,6 @@ def toIndex(request):
             executeInfo["msg"] = addProduct.errors
         return JsonResponse(executeInfo)
 
-# 产品详情页
-def detail_product(request,id):
-    productInfo = product.objects.filter(id=id)
-    return render(request,"details/detail.html",{"productInfo":productInfo})
 
 # 产品标星
 def star_product(request):
