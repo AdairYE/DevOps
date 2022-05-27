@@ -119,3 +119,14 @@ class project(models.Model):
     class Meta:
         verbose_name = "项目管理"
         verbose_name_plural = verbose_name
+
+# 文件管理
+class wiki(models.Model):
+    name = models.CharField(max_length=32,verbose_name="文件与文件夹名")
+    _fileType = (
+        ("d","文件夹"),
+        ("f","文件")
+    )
+    fileType = models.CharField(max_length=16,verbose_name="文件类型",
+                                choices=_fileType)
+    contactType = models.CharField(max_length=16,verbose_name="关联类型")  #
