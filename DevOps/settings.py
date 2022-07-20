@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Auth',
     "BusinessInfo",
+    "OpsTools",
 ]
 
 MIDDLEWARE = [
