@@ -10,15 +10,27 @@ class dbms(models.Model):
         unique=True,
         verbose_name="数据库名称"
     )
+    _env = (
+        ("QA","QA"),
+        ("UAT","UAT"),
+        ("STAGE","STAGE"),
+        ("PRO","PRO"),
+    )
+    env = models.CharField(
+        max_length=16,
+        null=True,
+        verbose_name="所属环境",
+        choices=_env
+    )
 
-    databaseType = (
+    _dbType = (
         ("mysql","mysql"),
     )
     dbType = models.CharField(
         max_length=24,
         null=True,
         verbose_name="数据库类型",
-        choices=databaseType
+        choices=_dbType
     )
 
     dbHost = models.CharField(
@@ -45,11 +57,30 @@ class dbms(models.Model):
         verbose_name="数据库密码"
     )
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "数据库管理"
+        verbose_name_plural = verbose_name
+
 class dbHouse(models.Model):
-    name = models.ForeignKey(
+    dbID = models.ForeignKey(
         dbms,
-        max_length=64,
         null=True,
         on_delete = models.SET_NULL,
+        verbose_name="数据库ID"
+    )
+
+    name = models.CharField(
+        max_length=64,
+        null=True,
         verbose_name="数据仓库"
     )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "数据仓库"
+        verbose_name_plural = verbose_name

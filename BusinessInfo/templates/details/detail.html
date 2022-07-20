@@ -53,10 +53,40 @@
             user-select: none;
         }
 
+        body {
+            max-width: 100%;
+            overflow: auto;
+        }
+
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {
                 font-size: 3.5rem;
             }
+        }
+
+        .myrow {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .my-col-3 {
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
+
+        .my-col-9 {
+            flex: 0 0 80%;
+            max-width: 80%;
+        }
+
+        .my-pt-3 {
+            padding-top: 3.5rem !important;
+        }
+
+        a {
+            color: #23272b;
+            text-decoration: none;
+        | font-size: xx-large;
         }
     </style>
 
@@ -67,7 +97,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-sm navbar-dark bg-white border-bottom shadow-sm">
+<nav class="navbar navbar-expand-sm navbar-dark bg-white border-bottom shadow-sm fixed-top">
     <a class="navbar-brand text-dark" href="/auth/base/">
         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="18" fill="currentColor"
              class="bi bi-house-fill" viewBox="0 0 16 16">
@@ -107,11 +137,11 @@
 
 </nav>
 
-
-{% block content %}
-    {# 正文内容 #}
-{% endblock %}
-
+<div class="my-pt-3">
+    {% block content %}
+        {# 正文内容 #}
+    {% endblock %}
+</div>
 <script src="{% static 'js/jquery.js' %}" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="{% static 'js/jquery.slim.min.js' %}"><\/script>')</script>
 <script src="{% static 'js/bootstrap.js' %}"

@@ -12,6 +12,7 @@ urlpatterns = [
     path('product/detail/<str:id>/dashboard/',views.detail_product_dashboard,name="detail_product_dashboard"),
     path('product/detail/<str:id>/workorder/', views.detail_product_workorder, name="detail_product_workorder"),
     path('product/detail/<str:id>/wiki/', views.detail_product_wiki, name="detail_product_wiki"),
+
     path('product/detail/<str:id>/setting/', views.detail_product_setting, name="detail_product_setting"),
 
     # 项目

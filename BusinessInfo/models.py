@@ -120,7 +120,7 @@ class project(models.Model):
         verbose_name = "项目管理"
         verbose_name_plural = verbose_name
 
-# 文件管理
+# 知识库管理
 class wiki(models.Model):
     name = models.CharField(max_length=32,verbose_name="文件与文件夹名")
     _fileType = (
@@ -129,4 +129,21 @@ class wiki(models.Model):
     )
     fileType = models.CharField(max_length=16,verbose_name="文件类型",
                                 choices=_fileType)
-    contactType = models.CharField(max_length=16,verbose_name="关联类型")  #
+    _contactType = (
+        ("product","关联产品"),
+        ("project","关联项目")
+    )
+    contactType = models.CharField(max_length=16,verbose_name="关联类型",
+                                   choices=_contactType)
+    toProduct = models.ForeignKey(product,
+                                  null=True,on_delete=models.SET_NULL,verbose_name="关联产品")
+    toProject = models.ForeignKey(project,
+                                  null=True,on_delete=models.SET_NULL,verbose_name="关联项目")
+    pid = models.CharField(max_length=128,verbose_name="父级ID")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "知识库管理"
+        verbose_name_plural = verbose_name

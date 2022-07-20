@@ -1,0 +1,64 @@
+{% extends "details/detail.html" %}
+
+{% block content %}
+    <div class="myrow">
+        <div class="my-col-3 min-vh-100 bg-light border-right sidebar">
+            <br/>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Active</a>
+                </li>
+            </ul>
+        </div>
+        <div class="my-col-9">
+            <div class="border-bottom bg-light">
+                <ul class="nav justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa fa-pencil" aria-hidden="true"></i>
+                            编辑</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa fa-trash" aria-hidden="true"></i>
+                            删除</a>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn" data-toggle="modal" data-target="#addWiki"
+                                data-whatever="@mdo"><i class="fa fa-plus" aria-hidden="true"></i>
+                            新增
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="addWiki" tabindex="-1" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">创建文件/文件夹</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            {% for wikiInfo in addWiki %}
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">{{ wikiInfo.label }}</label>
+                                                {{ wikiInfo }}
+                                            </div>
+                                            {% endfor %}
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                        <button type="button" class="btn btn-primary">Send message</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+{% endblock %}

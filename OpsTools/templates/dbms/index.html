@@ -1,0 +1,45 @@
+{% extends "func_base.html" %}
+
+{% block content-head %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">数据库管理</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#exampleModal">+
+                增加数据库
+            </button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">名称</th>
+            <th scope="col">环境</th>
+            <th scope="col">库名</th>
+            <th scope="col">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for db in dbInfo %}
+        <tr>
+            <th scope="row">{{ db.id }}</th>
+            <td>{{ db.name }}</td>
+            <td>{{ db.env }}</td>
+            <td>
+                {% for dbhouse in db.dbhouse_set.all %}
+                    <a href="#" class="badge badge-success">{{ dbhouse }}</a>
+                {% endfor %}
+            </td>
+            <td>
+                <button type="button" class="btn btn-outline-info btn-sm">编辑</button>
+                <button type="button" class="btn btn-outline-danger btn-sm">删除</button>
+            </td>
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
