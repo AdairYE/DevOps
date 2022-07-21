@@ -12,6 +12,35 @@
 {% endblock %}
 
 {% block content %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">新增数据库</h5>
+                    <button type="button" onclick="pageRefresh()" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body successInfo">
+                    <form id="addDBInfo">
+                        {% for dbItem in addDatabaseInfo %}
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">{{ dbItem.label }}</label>
+                                {{ dbItem }}
+                            </div>
+                        {% endfor %}
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" onclick="pageRefresh()" class="btn btn-secondary" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" onclick="addDBMS()" class="btn btn-primary">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <table class="table table-hover">
         <thead>
         <tr>
@@ -28,11 +57,7 @@
             <th scope="row">{{ db.id }}</th>
             <td>{{ db.name }}</td>
             <td>{{ db.env }}</td>
-            <td>
-                {% for dbhouse in db.dbhouse_set.all %}
-                    <a href="#" class="badge badge-success">{{ dbhouse }}</a>
-                {% endfor %}
-            </td>
+            <td>{{ db.dbHouse }}</td>
             <td>
                 <button type="button" class="btn btn-outline-info btn-sm">编辑</button>
                 <button type="button" class="btn btn-outline-danger btn-sm">删除</button>
@@ -42,4 +67,42 @@
 
         </tbody>
     </table>
+{% endblock %}
+
+{% block js %}
+    <script>
+        function addDBMS() {
+            $.ajax(
+                {
+                    type: "POST",
+                    dataType: "json",
+                    url: "{% url 'dbms_index' %}",
+                    data: $("#addDBInfo").serialize(),
+                    headers: {"X-CSRFToken": "{{ csrf_token }}"}, //Django中表单提交都需要csrf验证
+                    success: function (data) {
+                        if (data["status"] == "false") {
+                            for (var info in data["msg"]) {
+                                var inputLabel = "#addDBInfo #id_" + info
+                                $(inputLabel).attr({"aria-describedby": "errInfo"})
+                                $(inputLabel).addClass("is-invalid")
+                                $(inputLabel).after(
+                                    "<div id='errInfo' class='invalid-feedback'>" + data["msg"][info][0] + "</div>"
+                                )
+                            }
+                            document.getElementById("addDBInfo").reset();
+                        } else {
+                            $(".successInfo").after(
+                                "<div class='alert alert-success' role='alert'><strong>恭喜！</strong>数据库添加成功！</div>"
+                            )
+                            document.getElementById("addDBInfo").reset();
+                        }
+                    }
+                }
+            )
+        }
+
+        function pageRefresh() {
+            window.location.reload()
+        }
+    </script>
 {% endblock %}

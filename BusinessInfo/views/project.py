@@ -4,7 +4,7 @@
 from django.shortcuts import render, redirect
 from BusinessInfo.models import project
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
-from BusinessInfo.froms.addProject import addProjectFrom
+from BusinessInfo.forms.addProject import addProjectFrom
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 

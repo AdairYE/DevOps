@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from BusinessInfo.models import product
-from BusinessInfo.froms.addProduct import addProductFrom
+from BusinessInfo.forms.addProduct import addProductForm
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.models import User
 
@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 def toIndex(request):
     executeInfo = {"status": "true", "msg": None}
     if request.method == "GET":
-        addProduct = addProductFrom()
+        addProduct = addProductForm()
         starProduct = product.objects.filter(star=request.user).order_by('-id')
         productData = {
             "starProduct": starProduct,
@@ -29,7 +29,7 @@ def toIndex(request):
         )
 
     elif request.method == "POST":
-        addProduct = addProductFrom(request.POST)
+        addProduct = addProductForm(request.POST)
         if addProduct.is_valid():
             proName = addProduct.save()
             update_author = product.objects.get(name=proName)

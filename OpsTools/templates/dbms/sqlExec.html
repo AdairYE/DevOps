@@ -1,0 +1,85 @@
+{% extends "func_base.html" %}
+{% load static %}
+
+{% block content-head %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">数据库SQL查询</h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="form-inline">
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary" type="button">数据库</button>
+            </div>
+            <select class="custom-select" id="inputGroupSelect03" aria-label="Example select with button addon">
+                {% for info in dbInfo %}
+                    <option id="dbname">{{ info }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" id="exesql" class="btn btn-primary mx-sm-3 mb-2" onclick="execSQL()">执行sql</button>
+    </div>
+
+
+    <pre id="code" style="min-height:370px;width: 100%;">
+        <textarea style="min-height:370px;width: 100%" id="sql" placeholder="SQL语句"></textarea>
+    </pre>
+
+    <div id="dataTable"></div>
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static "js/ace.js" %}"></script>
+    <script src="{% static "js/ext-beautify.js" %}"></script>
+    <script src="{% static "js/ext-language_tools.js" %}"></script>
+    <script src="{% static "js/mode-mysql.js" %}"></script>
+    <script src="{% static "js/theme-monokai.js" %}"></script>
+    <script>
+        editor = ace.edit('code');// 这个地方就是id是editor的div
+        editor.setTheme('ace/theme/monokai'); //主题
+        var jsMode = ace.require('ace/mode/mysql').Mode; //支持语言
+        editor.session.setMode(new jsMode());    //引入
+        editor.setFontSize(18);    //设置默认标签大小
+        editor.setReadOnly(false);        //false为可编辑
+        editor.setOption("wrap", "free");   //换行
+        ace.require("ace/ext/language_tools");
+        editor.setOptions({
+            enableBasicAutocompletion: true, //启用基本自动完成
+            enableSnippets: true,             //启用代码段
+            enableLiveAutocompletion: true    //启用实时自动完成
+
+        });
+    </script>
+    <script>
+        function execSQL() {
+            $("#exesql").attr("disabled", 'disabled');
+            var execInfo = {
+                "db": $("#dbname").val(),
+                "sql": editor.getValue()
+            }
+            $.ajax(
+                {
+                    type: "POST",
+                    dataType: "json",
+                    data: JSON.stringify(execInfo),
+                    url: "{% url 'dbms_sqlExec' %}",
+                    headers: {"X-CSRFToken": "{{ csrf_token }}"}, //Django中表单提交都需要csrf验证
+                    success: function (data) {
+
+                        if (data["status"] == "false") {
+                            $("#exesql").removeAttr("disabled");
+                            $("#code").after(
+                                "<div class='alert alert-danger' role='alert'>" + data["msg"] + "</div>"
+                            )
+                        } else {
+                            console.log(1111)
+                        }
+                    }
+                }
+            )
+        }
+    </script>
+{% endblock %}

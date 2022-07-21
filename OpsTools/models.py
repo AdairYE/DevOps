@@ -56,23 +56,7 @@ class dbms(models.Model):
         null=True,
         verbose_name="数据库密码"
     )
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = "数据库管理"
-        verbose_name_plural = verbose_name
-
-class dbHouse(models.Model):
-    dbID = models.ForeignKey(
-        dbms,
-        null=True,
-        on_delete = models.SET_NULL,
-        verbose_name="数据库ID"
-    )
-
-    name = models.CharField(
+    dbHouse = models.CharField(
         max_length=64,
         null=True,
         verbose_name="数据仓库"
@@ -82,5 +66,5 @@ class dbHouse(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "数据仓库"
+        verbose_name = "数据库管理"
         verbose_name_plural = verbose_name

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from BusinessInfo.froms.addWiki import addWikiFrom
+from BusinessInfo.forms.addWiki import addWikiFrom
 
 # 产品详情页
 def detail_product(request,id):

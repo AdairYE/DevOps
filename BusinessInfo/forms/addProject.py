@@ -1,5 +1,5 @@
 from django import forms
-from DevOps.froms import baseFroms
+from DevOps.forms import baseFroms
 from BusinessInfo.models import project
 
 class addProjectFrom(baseFroms,forms.ModelForm):
