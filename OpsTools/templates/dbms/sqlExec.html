@@ -26,8 +26,16 @@
     <pre id="code" style="min-height:370px;width: 100%;">
         <textarea style="min-height:370px;width: 100%" id="sql" placeholder="SQL语句"></textarea>
     </pre>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+            <tr id="resultHeader">
+            </thead>
+            <tbody id="resultData">
+            </tbody>
+        </table>
+    </div>
 
-    <div id="dataTable"></div>
 
 {% endblock %}
 
@@ -68,14 +76,32 @@
                     url: "{% url 'dbms_sqlExec' %}",
                     headers: {"X-CSRFToken": "{{ csrf_token }}"}, //Django中表单提交都需要csrf验证
                     success: function (data) {
-
+                        $("#exesql").removeAttr("disabled");
                         if (data["status"] == "false") {
-                            $("#exesql").removeAttr("disabled");
                             $("#code").after(
                                 "<div class='alert alert-danger' role='alert'>" + data["msg"] + "</div>"
                             )
                         } else {
-                            console.log(1111)
+                            console.log(data["data"]["results"])
+                            for (var head in data["data"]["header"]) {
+                                $("#resultHeader").append(
+                                    "<th scope='col'>" + data["data"]["header"][head] + "</th>"
+                                )
+                            }
+                            for (var result in data["data"]["results"]) {
+
+                                var trname = "resultData_" + result
+                                console.log(trname)
+                                $("#resultData").append(
+                                    "<tr id=" + trname + "></tr>"
+                                )
+                                for (var res in data["data"]["results"][result]) {
+                                    var trname = "#resultData_" + result
+                                    $(trname).append(
+                                        "<td>" + data["data"]["results"][result][res] + "</td>"
+                                    )
+                                }
+                            }
                         }
                     }
                 }

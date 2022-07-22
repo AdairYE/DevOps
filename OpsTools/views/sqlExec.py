@@ -26,7 +26,17 @@ def sqlExec(request):
             mysql = mysqlDB(dbHost,dbPort,dbUser,dbPasswd,dbHouse)
             db = mysql.DBconn() # 数据库链接
             result = mysql.SQLexec(db,execSql)
-            executeInfo["data"] = result
+
+            header = []
+            for head in result["fields"]:
+                header.append(head[0])
+            results = []
+            for result in result["results"]:
+                results.append(result)
+            executeInfo["data"] = {
+                "header":header,
+                "results":results
+            }
         except Exception as e:
             executeInfo["status"] = "false"
             executeInfo["msg"] = str(e)
