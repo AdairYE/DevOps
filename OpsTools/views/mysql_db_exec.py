@@ -25,14 +25,17 @@ class mysqlDB:
         charset='utf8',
         connect_timeout=180
       )
+      print("链接数据库:%s:%s@%s" %(self.host,self.port,self.db))
       return db
     except Exception as e:
+      print("数据库链接失败:", e)
       raise Exception(
         "数据库链接失败:", e
       )
 
   def SQLexec(self, db,sql):
     try:
+      print("sql:",sql)
       cursor = db.cursor()
       cursor.execute(sql)
       results = cursor.fetchall()  # sql 执行数据

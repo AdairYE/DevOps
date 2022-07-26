@@ -26,15 +26,23 @@
     <pre id="code" style="min-height:370px;width: 100%;">
         <textarea style="min-height:370px;width: 100%" id="sql" placeholder="SQL语句"></textarea>
     </pre>
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-            <tr id="resultHeader">
-            </thead>
-            <tbody id="resultData">
-            </tbody>
-        </table>
+
+    <div class="table-responsive" id="resultdata">
+        <div class="spinner-border m-5 invisible" role="status" id="loading">
+            <span class="sr-only">Loading...</span>
+        </div>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+            <li class="page-item">
+                <a class="page-link">Previous</a>
+            </li>
+
+            <li class="page-item" id="pageItem">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
 
 
 {% endblock %}
@@ -64,9 +72,11 @@
     <script>
         function execSQL() {
             $("#exesql").attr("disabled", 'disabled');
+            $("#loading").removeClass("invisible")
             var execInfo = {
                 "db": $("#dbname").val(),
-                "sql": editor.getValue()
+                "sql": editor.getValue(),
+                "page":getUrlParam('page'),
             }
             $.ajax(
                 {
@@ -77,12 +87,24 @@
                     headers: {"X-CSRFToken": "{{ csrf_token }}"}, //Django中表单提交都需要csrf验证
                     success: function (data) {
                         $("#exesql").removeAttr("disabled");
+                        $("#loading").addClass("invisible")
                         if (data["status"] == "false") {
                             $("#code").after(
-                                "<div class='alert alert-danger' role='alert'>" + data["msg"] + "</div>"
+                                {#"<div class='alert alert-danger' role='alert'>" + data["msg"] + "</div>"#}
+                                "<div class='alert alert-danger alert-dismissible fade show' role='alert'>" + data["msg"] + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span> </button> </div>"
                             )
                         } else {
-                            console.log(data["data"]["results"])
+                            $('#resultdata').html("");
+                            $("#resultdata").html(
+                                "<table class='table table-bordered'><thead><tr id='resultHeader'> </thead> <tbody id='resultData'> </tbody> </table>"
+                            );
+
+                            for (var page = 1;page<=data["data"]["allrow"];page++) {
+                                $("#pageItem").before(
+                                "<li class='page-item'><a class='page-link' href='?page=" + page + "'>" + page + "</a></li>"
+                            );
+                            }
+
                             for (var head in data["data"]["header"]) {
                                 $("#resultHeader").append(
                                     "<th scope='col'>" + data["data"]["header"][head] + "</th>"
@@ -91,7 +113,6 @@
                             for (var result in data["data"]["results"]) {
 
                                 var trname = "resultData_" + result
-                                console.log(trname)
                                 $("#resultData").append(
                                     "<tr id=" + trname + "></tr>"
                                 )
