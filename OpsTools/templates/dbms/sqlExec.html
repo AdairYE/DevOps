@@ -19,7 +19,7 @@
                 {% endfor %}
             </select>
         </div>
-        <button type="submit" id="exesql" class="btn btn-primary mx-sm-3 mb-2" onclick="execSQL()">执行sql</button>
+        <button type="submit" id="exesql" class="btn btn-primary mx-sm-3 mb-2" onclick="execSQL(1)">执行sql</button>
     </div>
 
 
@@ -32,16 +32,10 @@
             <span class="sr-only">Loading...</span>
         </div>
     </div>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-end">
-            <li class="page-item">
-                <a class="page-link">Previous</a>
-            </li>
 
-            <li class="page-item" id="pageItem">
-                <a class="page-link" href="#">Next</a>
-            </li>
-        </ul>
+    {#    分页   #}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end" id="page"></ul>
     </nav>
 
 
@@ -70,14 +64,17 @@
         });
     </script>
     <script>
-        function execSQL() {
+
+        function execSQL(pagenum) {
             $("#exesql").attr("disabled", 'disabled');
             $("#loading").removeClass("invisible")
+
             var execInfo = {
                 "db": $("#dbname").val(),
                 "sql": editor.getValue(),
-                "page":getUrlParam('page'),
+                "page": pagenum
             }
+
             $.ajax(
                 {
                     type: "POST",
@@ -99,12 +96,25 @@
                                 "<table class='table table-bordered'><thead><tr id='resultHeader'> </thead> <tbody id='resultData'> </tbody> </table>"
                             );
 
-                            for (var page = 1;page<=data["data"]["allrow"];page++) {
-                                $("#pageItem").before(
-                                "<li class='page-item'><a class='page-link' href='?page=" + page + "'>" + page + "</a></li>"
-                            );
-                            }
+                            if (data["data"]["allrow"] > 1) {
+                                $("#page").html("")
 
+                                if (data["data"]["page"] == 1) {
+                                    $("#page").html(
+                                        "<li class='page-item disabled'> <button class='page-link' aria-label='Previous' onclick='execSQL(" + (data["data"]["page"] - 1) + ")'> <span aria-hidden='true'>&laquo;</span> </button> </li><li class='page-item'> <button class='page-link' aria-label='Next' onclick='execSQL(" + (data["data"]["page"] + 1) + ")'> <span aria-hidden='true'>&raquo;</span> </button> </li>"
+                                    )
+                                }
+                                if (data["data"]["page"] == data["data"]["allrow"]) {
+                                    $("#page").html(
+                                        "<li class='page-item'> <button class='page-link' aria-label='Previous' onclick='execSQL(" + (data["data"]["page"] - 1) + ")'> <span aria-hidden='true'>&laquo;</span> </button> </li><li class='page-item disabled'> <button class='page-link' aria-label='Next' onclick='execSQL(" + (data["data"]["page"] + 1) + ")'> <span aria-hidden='true'>&raquo;</span> </button> </li>"
+                                    )
+                                }
+                                if (data["data"]["page"] != 1 && data["data"]["page"] != data["data"]["allrow"]) {
+                                    $("#page").html(
+                                        "<li class='page-item'> <button class='page-link' aria-label='Previous' onclick='execSQL(" + (data["data"]["page"] - 1) + ")'> <span aria-hidden='true'>&laquo;</span> </button> </li><li class='page-item'> <button class='page-link' aria-label='Next' onclick='execSQL(" + (data["data"]["page"] + 1) + ")'> <span aria-hidden='true'>&raquo;</span> </button> </li>"
+                                    )
+                                }
+                            }
                             for (var head in data["data"]["header"]) {
                                 $("#resultHeader").append(
                                     "<th scope='col'>" + data["data"]["header"][head] + "</th>"

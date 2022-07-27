@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from OpsTools.models import dbms
 from OpsTools.views.mysql_db_exec import mysqlDB
-import json
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import json,re
+from math import ceil
 
 
 # Create your views here.
@@ -16,7 +16,8 @@ def sqlExec(request):
     elif request.method == "POST":
         req = json.load(request)
         dbname = req["db"]
-        execSql = req["sql"]
+        execSql = req["sql"].strip()
+        page = req["page"]
         dbInfo = dbms.objects.get(name=dbname)
         dbHost = dbInfo.dbHost
         dbPort = dbInfo.dbPort
@@ -31,7 +32,12 @@ def sqlExec(request):
             result = mysql.SQLexec(db, execSql) # 获取数据总数
             allrow = len(result["results"])
 
-            # execSql = execSql + "LIMIT {offset},10".format(offset=)
+            if execSql.endswith(';'):
+                execSql = execSql.rstrip(";")
+
+            offset = (page - 1) * 10
+            execSql = execSql + " LIMIT {offset},10;".format(offset=offset)
+
             result = mysql.SQLexec(db, execSql)
             db.close()  # 断开数据库链接
 
@@ -45,7 +51,8 @@ def sqlExec(request):
             executeInfo["data"] = {
                 "header": header,
                 "results": results,
-                "allrow":allrow
+                "allrow":ceil(allrow / 10),
+                "page":page
             }
             print("格式化执行结果:", executeInfo)
         except Exception as e:
