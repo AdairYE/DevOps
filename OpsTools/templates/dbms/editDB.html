@@ -1,0 +1,57 @@
+{% extends "func_base.html" %}
+
+{% block content-head %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2"><a href="{% url 'dbms_index' %}">数据库管理</a> / 编辑</h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <form id="editDBInfo">
+        {% for info in DatabaseInfo %}
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-1 col-form-label">{{ info.label }}</label>
+                <div class="col-sm-4">
+                    {{ info }}
+                </div>
+            </div>
+        {% endfor %}
+    </form>
+
+    <div class="alert alert-secondary modal-footer" role="alert">
+        <button type="button" onclick="editDBMS(id)" class="btn btn-primary">提交</button>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        function editDBMS(id) {
+            $.ajax(
+                {
+                    type: "POST",
+                    dataType: "json",
+                    url: "{% url 'dbms_edit' id=id%}",
+                    data: $("#editDBInfo").serialize(),
+                    headers: {"X-CSRFToken": "{{ csrf_token }}"}, //Django中表单提交都需要csrf验证
+                    success: function (data) {
+                        console.log(data)
+                        if (data["status"] == "false") {
+                            for (var info in data["msg"]) {
+                                var inputLabel = "#editDBInfo #id_" + info
+                                $(inputLabel).attr({"aria-describedby": "errInfo"})
+                                $(inputLabel).addClass("is-invalid")
+                                $(inputLabel).after(
+                                    "<div id='errInfo' class='invalid-feedback'>" + data["msg"][info][0] + "</div>"
+                                )
+                            }
+                            document.getElementById("editDBInfo").reset();
+                        } else {
+                            window.location.href = "{% url 'dbms_index' %}";
+                        }
+                    }
+                }
+            )
+        }
+    </script>
+{% endblock %}

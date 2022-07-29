@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block content %}
+    <!-- 新增数据库模态框 -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -53,20 +54,42 @@
         </thead>
         <tbody>
         {% for db in dbInfo %}
-        <tr>
-            <th scope="row">{{ db.id }}</th>
-            <td>{{ db.name }}</td>
-            <td>{{ db.env }}</td>
-            <td>{{ db.dbHouse }}</td>
-            <td>
-                <button type="button" class="btn btn-outline-info btn-sm">编辑</button>
-                <button type="button" class="btn btn-outline-danger btn-sm">删除</button>
-            </td>
-        </tr>
+            <tr>
+                <th scope="row">{{ db.id }}</th>
+                <td>{{ db.name }}</td>
+                <td>{{ db.env }}</td>
+                <td>{{ db.dbHouse }}</td>
+                <td>
+                    <a href="{% url 'dbms_edit' id=db.id %}"><button type="button" class="btn btn-outline-info btn-sm"
+                            data-toggle="modal" data-target="#editModel">编辑
+                    </button></a>
+                    <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal"
+                            data-target="#deleteModel" onclick="deleteConfirm('{{ db.name }}')">删除
+                    </button>
+                </td>
+            </tr>
         {% endfor %}
-
         </tbody>
     </table>
+    <!-- 信息删除模态框 -->
+    <div class="modal fade" id="deleteModel" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="deleteModel-info"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteInfo()">删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block js %}
@@ -104,5 +127,33 @@
         function pageRefresh() {
             window.location.reload()
         }
+
+        // 删除数据库信息
+        function deleteConfirm(dbName) {
+            $("#deleteModel-info").html(
+                "<p class='font-weight-bold'>请确定是否删除<span class='text-danger' id='delete-dbNane'> " + dbName + " </span>数据库信息？</p>"
+            )
+        }
+
+        function deleteInfo() {
+            var dbname = $("#delete-dbNane").html()
+            $.ajax(
+                {
+                    url: "{% url 'dbms_index' %}",
+                    type: "delete",
+                    data: {"dbname": dbname},
+                    dataType: "json",
+                    headers: {"X-CSRFToken": "{{ csrf_token }}"},
+                    success: function (data) {
+                        if (data["status"] == "false") {
+                            alert("数据库删除失败！")
+                        } else {
+                            window.location.reload()
+                        }
+                    }
+                }
+            )
+        }
+
     </script>
 {% endblock %}
