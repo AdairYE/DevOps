@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from OpsTools.models import dbms
 from OpsTools.views.mysql_db_exec import mysqlDB
-import json,re
+import json, re
 from math import ceil
 
 
@@ -29,7 +29,7 @@ def sqlExec(request):
             mysql = mysqlDB(dbHost, dbPort, dbUser, dbPasswd, dbHouse)
             db = mysql.DBconn()  # 数据库链接
 
-            result = mysql.SQLexec(db, execSql) # 获取数据总数
+            result = mysql.SQLexec(db, execSql)  # 获取数据总数
             allrow = len(result["results"])
 
             if execSql.endswith(';'):
@@ -51,8 +51,8 @@ def sqlExec(request):
             executeInfo["data"] = {
                 "header": header,
                 "results": results,
-                "allrow":ceil(allrow / 10),
-                "page":page
+                "allrow": ceil(allrow / 10),
+                "page": page
             }
             print("格式化执行结果:", executeInfo)
         except Exception as e:

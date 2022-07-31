@@ -1,0 +1,8 @@
+1、生成requirements.txt 文件，文件需和manage.py在同级:
+     pip3 freeze > requirements.txt
+2、执行requirements:
+    pip3 install -r requirements.txt
+3、生成镜像：
+    docker build -t sqlexec:v1 .
+4、启动镜像：
+    docker run -itd --name sqlexec -p 3000:8000 sqlexec:v1
